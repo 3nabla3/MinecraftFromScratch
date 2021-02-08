@@ -65,8 +65,14 @@ project "Minecraft"
 
 	filter "configurations:Debug"
 		defines {"DEBUG"}
+		optimize "off"
 		symbols "on"
 
-	filter "configurations:Debug"
-		defines {"NDEBUG"}
+	filter "configurations:Release"
+		defines {"RELEASE"}
+		optimize "on"
+		symbols "on"
+
+	filter "configurations:Dist"
+		defines {"DIST"}
 		optimize "on"
