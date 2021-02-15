@@ -32,7 +32,5 @@ private:
 	IndexBuffer* m_IndexBuffer = nullptr;
 	VertexBufferLayout* m_Layout = nullptr;
 	Shader* m_BlueTriangle = nullptr;
-
-	void* m_MemoryLeak;
 };
 

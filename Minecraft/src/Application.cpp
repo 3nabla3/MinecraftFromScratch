@@ -87,8 +87,6 @@ void Application::OnUpdate(float timestep)
 	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 	glfwSwapBuffers(m_Window);
 	glfwPollEvents();
-
-	m_MemoryLeak = malloc(10000000);
 }
 
 void Application::Run()
