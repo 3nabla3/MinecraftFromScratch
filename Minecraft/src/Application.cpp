@@ -32,6 +32,21 @@ Application::Application()
 		{
 			Application::GetInstance()->Close();
 		});
+
+	float vertices[6] = {
+		-0.5f, -0.5f,
+		 0.0f,  0.5f,
+		 0.5f, -0.5f
+	};
+
+	m_Buffer = new VertexBuffer(vertices, 6 * sizeof(float));
+	m_Buffer->Bind();
+
+	GLCall(glEnableVertexAttribArray(0));
+	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+
+	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
+	m_BlueTriangle->Use();
 }
 
 Application::~Application()
@@ -59,7 +74,7 @@ void Application::Run()
 	{
 		float time = (float)glfwGetTime();
 		float ts = time - m_LastFrameTime;
-		//spdlog::info("Time step: %f", ts);
+		//spdlog::info("Time step: %d", ts);
 		OnUpdate(ts);
 		glfwPollEvents();
 		m_LastFrameTime = time;
