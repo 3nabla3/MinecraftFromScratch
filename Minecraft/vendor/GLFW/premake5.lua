@@ -1,3 +1,4 @@
+
 project "GLFW"
 	kind "StaticLib"
 	language "C"
@@ -17,10 +18,9 @@ project "GLFW"
 		"src/vulkan.c",
 		"src/window.c"
 	}
-
 	filter "system:linux"
 		pic "On"
-
+        toolset "gcc"
 		systemversion "latest"
 		staticruntime "On"
 

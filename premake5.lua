@@ -65,6 +65,10 @@ project "Minecraft"
 
 	filter "configurations:Debug"
 		defines {"DEBUG"}
+		symbols "on"
+
+	filter "configurations:Debug"
+		defines {"NDEBUG"}
 		optimize "off"
 		symbols "on"
 
