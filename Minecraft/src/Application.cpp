@@ -4,7 +4,7 @@
 Application* Application::s_Instance = nullptr;
 
 Application::Application()
-	:m_LastFrameTime(0.0f), m_Window(nullptr)
+	:m_LastFrameTime(0.0f), m_Window(nullptr), m_BlueTriangle(nullptr), m_Buffer(nullptr), m_Layout(nullptr)
 {
 	if (Application::s_Instance)
 		spdlog::critical("Application already exists");
@@ -39,11 +39,18 @@ Application::Application()
 		 0.5f, -0.5f
 	};
 
+	m_Vao = new VertexArray();
+
 	m_Buffer = new VertexBuffer(vertices, 6 * sizeof(float));
 	m_Buffer->Bind();
 
-	GLCall(glEnableVertexAttribArray(0));
-	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+	m_Layout = new VertexBufferLayout({
+			{GL_FLOAT, 2, GL_FALSE}
+	});
+
+	m_Buffer->SetLayout(m_Layout);
+
+	m_Vao->AddBuffer(*m_Buffer, *m_Layout);
 
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
@@ -74,7 +81,8 @@ void Application::Run()
 	{
 		float time = (float)glfwGetTime();
 		float ts = time - m_LastFrameTime;
-		//spdlog::info("Time step: %d", ts);
+		m_Vao->Bind();
+
 		OnUpdate(ts);
 		glfwPollEvents();
 		m_LastFrameTime = time;
