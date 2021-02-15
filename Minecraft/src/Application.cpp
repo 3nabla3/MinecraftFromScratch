@@ -4,7 +4,7 @@
 Application* Application::s_Instance = nullptr;
 
 Application::Application()
-	:m_LastFrameTime(0.0f), m_Window(nullptr), m_BlueTriangle(nullptr), m_Buffer(nullptr), m_Layout(nullptr)
+	:m_LastFrameTime(0.0f)
 {
 	if (Application::s_Instance)
 		spdlog::critical("Application already exists");
@@ -33,22 +33,30 @@ Application::Application()
 			Application::GetInstance()->Close();
 		});
 
-	float vertices[6] = {
+	spdlog::info(glGetString(GL_VERSION));
+
+	float vertices[] = {
 		-0.5f, -0.5f,
-		 0.0f,  0.5f,
-		 0.5f, -0.5f
+		 0.5f, -0.5f,
+		 0.5f,  0.5f,
+		-0.5f,  0.5f
+	};
+
+	unsigned int indices[6] = {
+		0, 1, 2,
+		2, 3, 0
 	};
 
 	m_Vao = new VertexArray();
 
-	m_Buffer = new VertexBuffer(vertices, 6 * sizeof(float));
+	m_Buffer = new VertexBuffer(vertices, 8 * sizeof(float));
 	m_Buffer->Bind();
 
 	m_Layout = new VertexBufferLayout({
 			{GL_FLOAT, 2, GL_FALSE}
 	});
 
-	m_Buffer->SetLayout(m_Layout);
+	m_IndexBuffer = new IndexBuffer(indices, 6);
 
 	m_Vao->AddBuffer(*m_Buffer, *m_Layout);
 
@@ -58,6 +66,12 @@ Application::Application()
 
 Application::~Application()
 {
+	delete m_Vao;
+	delete m_Buffer;
+	delete m_IndexBuffer;
+	delete m_Layout;
+	delete m_BlueTriangle;
+
 	spdlog::trace("Application closed");
 }
 
@@ -70,9 +84,11 @@ void Application::Close()
 void Application::OnUpdate(float timestep)
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT));
-	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 	glfwSwapBuffers(m_Window);
 	glfwPollEvents();
+
+	m_MemoryLeak = malloc(10000000);
 }
 
 void Application::Run()
@@ -82,14 +98,9 @@ void Application::Run()
 		float time = (float)glfwGetTime();
 		float ts = time - m_LastFrameTime;
 		m_Vao->Bind();
-
+		m_IndexBuffer->Bind();
 		OnUpdate(ts);
 		glfwPollEvents();
 		m_LastFrameTime = time;
 	}
-}
-
-Application* Application::GetInstance()
-{
-	return s_Instance;
 }

@@ -4,6 +4,7 @@
 
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 
@@ -17,17 +18,21 @@ public:
 	void OnUpdate(float timestep);
 	void Run();
 
-	static Application* GetInstance();
+	static Application* GetInstance() { return s_Instance; }
 
 private:
-	GLFWwindow* m_Window;
 	static Application* s_Instance;
+	GLFWwindow* m_Window = nullptr;
+	
 	bool m_Running = true;
 	float m_LastFrameTime;
 
-	VertexArray* m_Vao;
-	VertexBuffer* m_Buffer;
-	VertexBufferLayout* m_Layout;
-	Shader* m_BlueTriangle;
+	VertexArray* m_Vao = nullptr;
+	VertexBuffer* m_Buffer = nullptr;
+	IndexBuffer* m_IndexBuffer = nullptr;
+	VertexBufferLayout* m_Layout = nullptr;
+	Shader* m_BlueTriangle = nullptr;
+
+	void* m_MemoryLeak;
 };
 
