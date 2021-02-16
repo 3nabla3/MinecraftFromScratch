@@ -1,12 +1,13 @@
 #include "pch.h"
 
 #include "Application.h"
+#include "Events/KeyEvent.h"
 
 Application* Application::s_Instance = nullptr;
 
 Application::Application()
 	:m_LastFrameTime(0.0f)
-{
+{	
 	if (s_Instance)
 	{
 		spdlog::error("Application already exists!");
@@ -17,6 +18,7 @@ Application::Application()
 
 	spdlog::trace("Creating window");
 	m_Window = new Window();
+	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 	spdlog::info(glGetString(GL_VERSION));
 
 	float vertices[] = {
@@ -54,6 +56,12 @@ void Application::OnUpdate(float timestep)
 	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 	glfwSwapBuffers(m_Window->GetRawWindow());
 	glfwPollEvents();
+}
+
+void Application::OnEvent(Event& e)
+{
+	EventDispacher dispacher(e);
+	spdlog::trace(e.ToString());
 }
 
 void Application::Run()

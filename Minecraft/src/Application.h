@@ -18,6 +18,7 @@ public:
 
 	void Close();
 	void OnUpdate(float timestep);
+	void OnEvent(Event& e);
 	void Run();
 
 	static Application* GetInstance() { return s_Instance; }
