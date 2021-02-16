@@ -6,9 +6,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.system}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Minecraft/vendor/GLFW/include"
 IncludeDir["Glad"] = "Minecraft/vendor/Glad/include"
+IncludeDir["glm"] = "Minecraft/vendor/glm/include"
 
 include "Minecraft/vendor/GLFW"
 include "Minecraft/vendor/Glad"
+include "Minecraft/vendor/glm"
 
 project "Minecraft"
 	kind "ConsoleApp"
@@ -27,7 +29,8 @@ project "Minecraft"
 	{
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.glm}"
 	}
 
 	

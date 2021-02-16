@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Core.h"
+#include "glm/glm.hpp"
 
 Application* Application::s_Instance = nullptr;
 
@@ -9,7 +10,7 @@ Application::Application()
 	if (Application::s_Instance)
 		spdlog::critical("Application already exists");
 	
-	spdlog::set_level(spdlog::level::level_enum::trace);
+	spdlog::set_level(spdlog::level::trace);
 
 	Application::s_Instance = this;
 	
@@ -31,6 +32,11 @@ Application::Application()
 	glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			Application::GetInstance()->Close();
+		});
+
+	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int a, int b, int c, int d)
+		{
+			spdlog::info("{}, {}, {}, {}", a, b, c, d);
 		});
 
 	spdlog::info(glGetString(GL_VERSION));
@@ -64,6 +70,26 @@ Application::Application()
 	m_BlueTriangle->Use();
 }
 
+void Application::OnUpdate(float timestep)
+{
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+	glfwSwapBuffers(m_Window);
+	glfwPollEvents();
+}
+
+void Application::Run()
+{
+	while (m_Running)
+	{
+		float time = (float)glfwGetTime();
+		float ts = time - m_LastFrameTime;
+		OnUpdate(ts);
+		glfwPollEvents();
+		m_LastFrameTime = time;
+	}
+}
+
 Application::~Application()
 {
 	delete m_Vao;
@@ -79,26 +105,4 @@ void Application::Close()
 {
 	spdlog::trace("Closing application");
 	m_Running = false;
-}
-
-void Application::OnUpdate(float timestep)
-{
-	GLCall(glClear(GL_COLOR_BUFFER_BIT));
-	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-	glfwSwapBuffers(m_Window);
-	glfwPollEvents();
-}
-
-void Application::Run()
-{
-	while (m_Running)
-	{
-		float time = (float)glfwGetTime();
-		float ts = time - m_LastFrameTime;
-		m_Vao->Bind();
-		m_IndexBuffer->Bind();
-		OnUpdate(ts);
-		glfwPollEvents();
-		m_LastFrameTime = time;
-	}
 }

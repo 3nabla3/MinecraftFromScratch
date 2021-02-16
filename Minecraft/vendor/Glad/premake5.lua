@@ -16,7 +16,9 @@ project "Glad"
 		"include"
 	}
 	
+	systemversion "latest"
+	staticruntime "On"
+	
 	filter "system:linux"
 		toolset "gcc"
-		systemversion "latest"
-		staticruntime "On"
+
