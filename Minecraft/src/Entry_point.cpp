@@ -1,10 +1,10 @@
-#include "spdlog/spdlog.h"
+#include "pch.h"
+
 #include "Application.h"
-#include <iostream>
 
 int main()
 {
-	spdlog::info("Hello world");
+	spdlog::set_level(spdlog::level::trace);
 	Application app = Application();
 	app.Run();
 }

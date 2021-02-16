@@ -1,8 +1,8 @@
 #pragma once
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include <string>
 #include "spdlog/spdlog.h"
+#include "glm/glm.hpp"
 
 #define ASSERT(x) if (!x) spdlog::error("Assertion failed!");
 #define GLCall(x) GLClearError(); x; ASSERT(GLLogCall(#x, __FILE__, __LINE__))

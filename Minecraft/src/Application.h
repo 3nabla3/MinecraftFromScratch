@@ -2,6 +2,8 @@
 #include <chrono>
 #include "GLFW/glfw3.h"
 
+#include "Window.h"
+
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -22,7 +24,7 @@ public:
 
 private:
 	static Application* s_Instance;
-	GLFWwindow* m_Window = nullptr;
+	Window* m_Window = nullptr;
 	
 	bool m_Running = true;
 	float m_LastFrameTime;

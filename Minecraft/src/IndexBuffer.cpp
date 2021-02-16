@@ -1,5 +1,6 @@
+#include "pch.h"
+
 #include "IndexBuffer.h"
-#include "Core.h"
 
 IndexBuffer::IndexBuffer(const unsigned int* indices, unsigned int count)
 	:m_Indices(indices), m_Count(count)

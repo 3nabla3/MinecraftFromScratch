@@ -1,5 +1,6 @@
+#include "pch.h"
+
 #include "VertexBuffer.h"
-#include "Core.h"
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {

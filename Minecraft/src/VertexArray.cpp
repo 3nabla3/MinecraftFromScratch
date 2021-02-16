@@ -1,5 +1,6 @@
+#include "pch.h"
+
 #include "VertexArray.h"
-#include "Core.h"
 
 VertexArray::VertexArray()
 	:m_Id(0)
@@ -27,12 +28,12 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	Bind();
 	vb.Bind();
 	const auto& elements = layout.GetElements();
-	unsigned int offset = 0;
+	uint64_t offset = 0; // has to be a 64 bit integer to avoid warning when converted to a pointer
 	for (int i = 0; i < elements.size(); i++)
 	{
 		const auto& e = elements.at(i);
 		GLCall(glEnableVertexAttribArray(i));
 		GLCall(glVertexAttribPointer(i, e.count, e.type, e.normalized, layout.GetStride(), (const void*)offset));
-		offset += e.count * e.GetSize();
+		offset += (uint64_t)e.count * e.GetSize();
 	}
 }

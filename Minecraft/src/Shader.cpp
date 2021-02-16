@@ -1,7 +1,6 @@
+#include "pch.h"
+
 #include "Shader.h"
-#include <sstream>
-#include "Core.h"
-#include "spdlog/spdlog.h"
 
 struct Shader::ShaderProgramSource
 {
