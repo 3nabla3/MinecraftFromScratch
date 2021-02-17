@@ -33,6 +33,8 @@ project "Minecraft"
 		"%{IncludeDir.glm}"
 	}
 
+	pchheader "pch.h"
+	pchsource ("%{prj.name}/src/pch.cpp")
 	
 	defines
 	{
