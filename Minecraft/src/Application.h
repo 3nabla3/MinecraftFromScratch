@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 
 #include "Window.h"
+#include "Events/ApplicationEvent.h"
 
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -16,7 +17,7 @@ public:
 	Application();
 	~Application();
 
-	void Close();
+	bool OnWindowClose(WindowCloseEvent& event);
 	void OnUpdate(float timestep);
 	void OnEvent(Event& e);
 	void Run();

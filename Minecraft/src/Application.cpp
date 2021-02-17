@@ -2,6 +2,9 @@
 
 #include "Application.h"
 #include "Events/KeyEvent.h"
+#include "Events/ApplicationEvent.h"
+
+#define BIND_EVENT_FN(func) std::bind(&func, this, std::placeholders::_1)
 
 Application* Application::s_Instance = nullptr;
 
@@ -18,7 +21,7 @@ Application::Application()
 
 	spdlog::trace("Creating window");
 	m_Window = new Window();
-	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+	m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	spdlog::info(glGetString(GL_VERSION));
 
 	float vertices[] = {
@@ -61,6 +64,8 @@ void Application::OnUpdate(float timestep)
 void Application::OnEvent(Event& e)
 {
 	EventDispacher dispacher(e);
+	dispacher.Dispach<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+
 	spdlog::trace(e.ToString());
 }
 
@@ -88,9 +93,9 @@ Application::~Application()
 	spdlog::trace("Application closed");
 }
 
-void Application::Close()
+bool Application::OnWindowClose(WindowCloseEvent& event)
 {
-	auto var = s_Instance;
 	spdlog::trace("Closing application");
 	m_Running = false;
+	return true;
 }

@@ -15,8 +15,8 @@ public:
 	inline bool IsCursorEnabled() const { return m_Data.CursorEnabled; }
 
 	inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
-	inline void SetVSync(bool enable);
-	inline void EnableCursor(bool enable);
+	void SetVSync(bool enable);
+	void EnableCursor(bool enable);
 
 	GLFWwindow* GetRawWindow() const { return m_Window; }
 
