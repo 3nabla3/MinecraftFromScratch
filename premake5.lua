@@ -2,7 +2,7 @@ workspace "Minecraft"
 	configurations { "Debug", "Release", "Dist" }
 	architecture "x64"
 	
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.system}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Minecraft/vendor/GLFW/include"
 IncludeDir["Glad"] = "Minecraft/vendor/Glad/include"
