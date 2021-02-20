@@ -1,15 +1,13 @@
 #pragma once
 #include <chrono>
+#include <vector>
+
 #include "GLFW/glfw3.h"
 
 #include "Window.h"
 #include "Events/ApplicationEvent.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "Shader.h"
+#include "Layer.h"
 
 class Application
 {
@@ -23,18 +21,14 @@ public:
 	void Run();
 
 	static Application* GetInstance() { return s_Instance; }
+	inline const Window* GetWindow() { return m_Window; }
 
 private:
 	static Application* s_Instance;
 	Window* m_Window = nullptr;
+	std::vector<Layer*> m_Layers;
 	
 	bool m_Running = true;
 	float m_LastFrameTime;
-
-	VertexArray* m_Vao = nullptr;
-	VertexBuffer* m_Buffer = nullptr;
-	IndexBuffer* m_IndexBuffer = nullptr;
-	VertexBufferLayout* m_Layout = nullptr;
-	Shader* m_BlueTriangle = nullptr;
 };
 
