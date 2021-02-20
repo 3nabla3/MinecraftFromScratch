@@ -21,6 +21,7 @@ Minecraft/vendor/Glad/bin-int
 *.project
 Makefile
 Minecraft/Minecraft.txt
+Minecraft/src/pch.h.gch
 
 
 ## Ignore Visual Studio temporary files, build results, and
