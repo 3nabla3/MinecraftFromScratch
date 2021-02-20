@@ -4,7 +4,13 @@
 #include "spdlog/spdlog.h"
 #include "glm/glm.hpp"
 
-#define ASSERT(x) if (!x) spdlog::error("Assertion failed!");
+#ifdef _WIN32
+#define ASSERT(x) if (!x) {spdlog::error("Assertion failed!"); __debugbreak(); }
+#elif __linux__
+#define ASSERT(x) if (!x) {spdlog::error("Assertion failed!"); raise(SIGTRAP); }
+#else
+#error "OS not supported yet!"
+#endif
 #define GLCall(x) GLClearError(); x; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
 
 static void GLClearError()

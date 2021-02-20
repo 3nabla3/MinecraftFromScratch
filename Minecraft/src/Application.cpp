@@ -29,43 +29,14 @@ Application::Application()
 	spdlog::info(glGetString(GL_VERSION));
 	
 	m_Layers.push_back(new Layer2D("Layer2d"));
-
-//	float vertices[] = {
-//		-0.5f, -0.5f,
-//		 0.5f, -0.5f,
-//		 0.5f,  0.5f,
-//		-0.5f,  0.5f
-//	};
-//
-//	unsigned int indices[6] = {
-//		0, 1, 2,
-//		2, 3, 0
-//	};
-
-//	m_Vao = new VertexArray();
-//
-//	m_Buffer = new VertexBuffer(vertices, 8 * sizeof(float));
-//	m_Buffer->Bind();
-//
-//	m_Layout = new VertexBufferLayout({
-//			{GL_FLOAT, 2, GL_FALSE}
-//	});
-//
-//	m_IndexBuffer = new IndexBuffer(indices, 6);
-//
-//	m_Vao->AddBuffer(*m_Buffer, *m_Layout);
-//
-//	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
-//	m_BlueTriangle->Use();
 }
 
 void Application::OnUpdate(float timestep)
 {
-	spdlog::trace("Application was updated");
+	//spdlog::trace("Application was updated");
 	for (int i = 0; i < m_Layers.size(); i++)
 		m_Layers[i]->OnUpdate(timestep);
 		
-	
 	glfwSwapBuffers(m_Window->GetRawWindow());
 	glfwPollEvents();
 }

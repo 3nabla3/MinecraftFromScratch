@@ -72,11 +72,6 @@ project "Minecraft"
 		defines {"DEBUG"}
 		symbols "on"
 
-	filter "configurations:Debug"
-		defines {"NDEBUG"}
-		optimize "off"
-		symbols "on"
-
 	filter "configurations:Release"
 		defines {"RELEASE"}
 		optimize "on"
