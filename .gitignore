@@ -8,6 +8,7 @@ Minecraft/vendor/Glad/bin-int
 .vs/
 .codelite/
 .build-debug/
+.build-release/
 
 *.sln
 *.user

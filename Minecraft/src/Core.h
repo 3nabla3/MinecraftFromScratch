@@ -24,6 +24,6 @@ static void GLClearError()
 static bool GLLogCall(const std::string& signature, const std::string& filename, int linenumber)
 {
 	if (GLenum error = glGetError())
-		spdlog::error("[OpenGL Error] (%d) %s: %s (%d)", error, signature, filename, linenumber); return true;
+		spdlog::error("[OpenGL Error] {} {}: {} ({})", error, signature, filename, linenumber); return true;
 	return false;
 }
