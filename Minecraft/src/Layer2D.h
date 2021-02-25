@@ -1,11 +1,11 @@
 #pragma once
 #include "Layer.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "Shader.h"
+#include "OpenGL/VertexArray.h"
+#include "OpenGL/VertexBuffer.h"
+#include "OpenGL/IndexBuffer.h"
+#include "OpenGL/VertexBufferLayout.h"
+#include "OpenGL/Shader.h"
 
 class Layer2D : public Layer
 {

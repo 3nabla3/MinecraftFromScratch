@@ -30,7 +30,8 @@ project "Minecraft"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"Minecraft/src"
 	}
 
 	pchheader "pch.h"
