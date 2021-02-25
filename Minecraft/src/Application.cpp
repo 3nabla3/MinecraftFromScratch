@@ -27,13 +27,14 @@ Application::Application()
 	m_Window = new Window();
 	m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	spdlog::info(glGetString(GL_VERSION));
+
+	m_Window->SetVSync(0);
 	
 	m_Layers.push_back(new Layer2D("Layer2d"));
 }
 
 void Application::OnUpdate(float timestep)
 {
-	//spdlog::trace("Application was updated");
 	for (int i = 0; i < m_Layers.size(); i++)
 		m_Layers[i]->OnUpdate(timestep);
 		
@@ -44,8 +45,13 @@ void Application::OnUpdate(float timestep)
 void Application::OnEvent(Event& e)
 {
 	spdlog::trace("Event was captured: {}", e.ToString());
+
 	EventDispacher dispacher(e);
 	dispacher.Dispach<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+
+	for (int i = 0; i < m_Layers.size(); i++) {
+		m_Layers.at(i)->OnEvent(e);
+	}
 }
 
 void Application::Run()
@@ -55,7 +61,6 @@ void Application::Run()
 	{
 		float time = (float)glfwGetTime();
 		float ts = time - m_LastFrameTime;
-		//spdlog::warn("Frame time {}", ts);
 		OnUpdate(ts);
 		glfwPollEvents();
 		m_LastFrameTime = time;

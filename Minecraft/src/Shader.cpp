@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "glm/gtc/type_ptr.hpp"
 #include "Shader.h"
 
 struct Shader::ShaderProgramSource
@@ -82,12 +83,28 @@ Shader::~Shader()
 {
 }
 
-void Shader::Use()
+void Shader::Use() const
 {
 	GLCall(glUseProgram(m_Id));
 }
 
-void Shader::Unuse()
+void Shader::Unuse() const
 {
 	GLCall(glUseProgram(0));
+}
+
+void Shader::UploadUniformMat4(const std::string& uniformName, const glm::mat4& matrix) const
+{
+	int location = GetUniformLocation(uniformName);
+
+	GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix)));
+}
+
+unsigned int Shader::GetUniformLocation(const std::string& uniformName) const
+{
+	GLCall(int location = glGetUniformLocation(m_Id, uniformName.c_str()));
+	if (location == -1)
+		spdlog::warn("Uniform {} does not exist!", uniformName);
+
+	return location;
 }

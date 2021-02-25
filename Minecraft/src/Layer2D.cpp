@@ -1,7 +1,12 @@
 #include "pch.h"
+#include "glm/glm.hpp"
+#include "glm/gtx/transform.hpp"
 
 #include "Layer2D.h"
 #include "Application.h"
+
+#include "Events/Event.h"
+#include "Events/KeyEvent.h"
 
 Layer2D::Layer2D(const std::string& name)
 	:Layer(name)
@@ -64,11 +69,32 @@ void Layer2D::OnUpdate(float timestep)
 	m_BlueTriangle->Use();
 	m_Vao->Bind();
 	m_IndexBuffer->Bind();
-	
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(m_xPos, m_yPos, 0.0f));
+	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
+	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 }
 
 void Layer2D::OnEvent(Event& e)
 {
+	if (e.GetEventType() == EventType::KeyPressed) {
+		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
+
+		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
+			m_xPos -= 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
+			m_xPos += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_UP)
+			m_yPos += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_DOWN)
+			m_yPos -= 0.1f;
+
+		if (kpe.GetKeyCode() == GLFW_KEY_LEFT_BRACKET)
+			m_Angle += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT_BRACKET)
+			m_Angle -= 0.1f;
+	}
 }

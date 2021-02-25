@@ -7,8 +7,10 @@ public:
 	Shader(const std::string& filepath);
 	~Shader();
 
-	void Use();
-	void Unuse();
+	void Use() const;
+	void Unuse() const;
+
+	void UploadUniformMat4(const std::string& uniformName, const glm::mat4& matrix) const;
 
 private:
 	unsigned int m_Id;
@@ -19,5 +21,6 @@ private:
 	ShaderProgramSource ParseShader(const std::string& filepath);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateProgram(const std::string& vertexSource, const std::string& fragmentSource);
+	unsigned int GetUniformLocation(const std::string& uniformName) const;
 };
 

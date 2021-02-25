@@ -25,4 +25,7 @@ private:
 	IndexBuffer* m_IndexBuffer = nullptr;
 	VertexBufferLayout* m_Layout = nullptr;
 	Shader* m_BlueTriangle = nullptr;
+
+	float m_xPos = 0.0f , m_yPos = 0.0f;
+	float m_Angle = 0.0f;
 };
