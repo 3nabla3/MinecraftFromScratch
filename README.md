@@ -5,11 +5,13 @@
 Only works for vs2019 and codelite\
 \
 __vs2019__\
-Double click on ` GenerateProject.bat `
+Double click on ` GenerateProject.bat `\
+Select `Minecraft` as startup project
 
 __codelite__\
 `$ chmod +x GenerateProject.sh premake/premake5`\
-`$ ./GenerateProject.sh`
+`$ ./GenerateProject.sh`\
+Select `Minecraft` as startup project
 
 # Status
-Only displays a blue triangle at the moment because I am still working on making a project that builds on both linux and windows
+Displays a blue square that can be moved with arrow keys and square brackets
