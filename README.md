@@ -13,7 +13,7 @@ __codelite__\
 `$ ./GenerateProject.sh`\
 Select `Minecraft` as startup project\
 In a terminal:\
-sudo apt install libx11-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev
+`sudo apt install libx11-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev`
 
 # Status
 Displays a blue square that can be moved with arrow keys and square brackets
