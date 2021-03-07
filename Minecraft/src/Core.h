@@ -8,9 +8,9 @@
 #include "glm/glm.hpp"
 
 #ifdef _WIN32
-#define ASSERT(x) if (!x) {spdlog::error("Assertion failed!"); __debugbreak(); }
+#define ASSERT(x) if (!(x)) {spdlog::error("Assertion failed!"); __debugbreak(); }
 #elif __linux__
-#define ASSERT(x) if (!x) {spdlog::error("Assertion failed!"); raise(SIGTRAP); }
+#define ASSERT(x) if (!(x)) {spdlog::error("Assertion failed!"); raise(SIGTRAP); }
 #else
 #error "OS not supported yet!"
 #endif

@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "glm/glm.hpp"
-#include "glm/gtx/transform.hpp"
 
 #include "Layer2D.h"
 #include "Application.h"
@@ -14,32 +12,50 @@ Layer2D::Layer2D(const std::string& name)
 	spdlog::trace("Layer {} was created", m_DebugName);
 	
 	float vertices[] = {
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.5f,  0.5f,
-		-0.5f,  0.5f
+//		-0.5f, -0.5f,
+//		 0.5f, -0.5f,
+//		 0.5f,  0.5f,
+//		-0.5f,  0.5f
+		0.0f,  0.0f,  0.0f, // 0
+		0.0f,  0.0f,  1.0f, // 1
+		0.0f,  1.0f,  0.0f, // 2
+		0.0f,  1.0f,  1.0f, // 3 
+	
+		1.0f,  0.0f,  0.0f, // 4
+		1.0f,  0.0f,  1.0f, // 5
+		1.0f,  1.0f,  0.0f, // 6
+		1.0f,  1.0f,  1.0f, // 7
 	};
 
-	unsigned int indices[6] = {
-		0, 1, 2,
-		2, 3, 0
+	unsigned int indices /* of a cube */ [] = {
+		// sides that touch the origin
+		0, 2, 4, 2, 4, 6,
+		0, 2, 1, 2, 1, 3,
+		0, 4, 1, 4, 1, 5,
+		
+		// sides that do not touch the origin
+		7, 6, 3, 6, 3, 2,
+		7, 6, 5, 6, 5, 4,
+		7, 3, 5, 3, 5, 1
 	};
 
 	m_Vao = new VertexArray();
 
-	m_Buffer = new VertexBuffer(vertices, 8 * sizeof(float));
+	m_Buffer = new VertexBuffer(vertices, 8 * 3 * sizeof(float));
 	m_Buffer->Bind();
 
 	m_Layout = new VertexBufferLayout({
-			{GL_FLOAT, 2, GL_FALSE}
+			{GL_FLOAT, 3, GL_FALSE}
 	});
 
-	m_IndexBuffer = new IndexBuffer(indices, 6);
+	m_IndexBuffer = new IndexBuffer(indices, 6 * 6);
 
 	m_Vao->AddBuffer(*m_Buffer, *m_Layout);
 
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
+	
+	m_Camera = new glm::mat4(glm::perspective(45.0f, 640.0f/480.0f, 0.1f, 150.0f));
 }
 
 Layer2D::~Layer2D()
@@ -69,13 +85,17 @@ void Layer2D::OnUpdate(float timestep)
 	m_BlueTriangle->Use();
 	m_Vao->Bind();
 	m_IndexBuffer->Bind();
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(m_xPos, m_yPos, 0.0f));
-	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	glm::mat4 projection = *m_Camera;
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(m_xPos, m_yPos, m_zPos));
+	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(1.0f, 1.0f, 1.0f));
+	
+	m_BlueTriangle->UploadUniformMat4("u_Projection", projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+	GLCall(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr)); // 6 sides * two triangles per side
 }
 
 void Layer2D::OnEvent(Event& e)
@@ -91,6 +111,13 @@ void Layer2D::OnEvent(Event& e)
 			m_yPos += 0.1f;
 		if (kpe.GetKeyCode() == GLFW_KEY_DOWN)
 			m_yPos -= 0.1f;
+			
+		if (kpe.GetKeyCode() == GLFW_KEY_COMMA)
+			m_zPos += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_PERIOD)
+			m_zPos -= 0.1f;
+			
+		spdlog::info("The zPosition is {}", m_zPos);
 
 		if (kpe.GetKeyCode() == GLFW_KEY_LEFT_BRACKET)
 			m_Angle += 0.1f;

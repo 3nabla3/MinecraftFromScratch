@@ -44,7 +44,7 @@ void Application::OnUpdate(float timestep)
 
 void Application::OnEvent(Event& e)
 {
-	spdlog::trace("Event was captured: {}", e.ToString());
+//	spdlog::trace("Event was captured: {}", e.ToString());
 
 	EventDispacher dispacher(e);
 	dispacher.Dispach<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));

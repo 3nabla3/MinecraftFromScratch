@@ -16,4 +16,4 @@ In a terminal:\
 `sudo apt install libx11-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev`
 
 # Status
-Displays a blue square that can be moved with arrow keys and square brackets
+Displays a colored cube that can be rotated and moved

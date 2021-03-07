@@ -50,7 +50,7 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 		GLCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length));
 		char* message = (char*)malloc(length);
 		GLCall(glGetShaderInfoLog(shader, length, &length, message));
-		spdlog::error("Failed to compile %s shader\n", (type == GL_VERTEX_SHADER ? "vertex" : "framgent"));
+		spdlog::error("Failed to compile {} shader\n", (type == GL_VERTEX_SHADER ? "vertex" : "framgent"));
 		spdlog::error(message);
 	}
 

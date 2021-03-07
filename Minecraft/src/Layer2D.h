@@ -1,6 +1,9 @@
 #pragma once
 #include "Layer.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtx/transform.hpp"
+
 #include "OpenGL/VertexArray.h"
 #include "OpenGL/VertexBuffer.h"
 #include "OpenGL/IndexBuffer.h"
@@ -25,7 +28,9 @@ private:
 	IndexBuffer* m_IndexBuffer = nullptr;
 	VertexBufferLayout* m_Layout = nullptr;
 	Shader* m_BlueTriangle = nullptr;
-
-	float m_xPos = 0.0f , m_yPos = 0.0f;
+	
+	glm::mat4* m_Camera = nullptr;
+	
+	float m_xPos = -0.5f , m_yPos = -0.5f, m_zPos = -2.0f;
 	float m_Angle = 0.0f;
 };
