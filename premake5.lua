@@ -18,6 +18,7 @@ project "Minecraft"
 	location "Minecraft"
 	targetdir ("bin/" .. outputdir.. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir.. "/%{prj.name}")
+	buildoptions {"/MP"}
 
 	files 
 	{
