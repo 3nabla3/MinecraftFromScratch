@@ -5,7 +5,6 @@ project "GLFW"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-	buildoptions {"/MP"}
 
 	files
 	{
@@ -21,7 +20,7 @@ project "GLFW"
 	}
 	filter "system:linux"
 		pic "On"
-        toolset "gcc"
+	        toolset "gcc"
 		systemversion "latest"
 		staticruntime "On"
 
@@ -47,6 +46,7 @@ project "GLFW"
 	filter "system:windows"
 		systemversion "latest"
 		staticruntime "On"
+		buildoptions {"/MP"}
 
 		files
 		{

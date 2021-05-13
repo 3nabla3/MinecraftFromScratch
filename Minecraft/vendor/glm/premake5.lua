@@ -4,7 +4,6 @@ project "glm"
 
 	targetdir ("bin/" ..outputdir.. "/%{prj.name}")
 	objdir ("bin-int/" ..outputdir.. "/%{prj.name}")
-	buildoptions {"/MP"}
 
 	files
 	{
@@ -22,5 +21,7 @@ project "glm"
 	systemversion "latest"
 	staticruntime "On"
 	
+	filter "system:windows"
+		buildoptions {"/MP"}	
 	filter "system:linux"
 		toolset "gcc"

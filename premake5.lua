@@ -18,7 +18,6 @@ project "Minecraft"
 	location "Minecraft"
 	targetdir ("bin/" .. outputdir.. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir.. "/%{prj.name}")
-	buildoptions {"/MP"}
 
 	files 
 	{
@@ -48,6 +47,7 @@ project "Minecraft"
 		cppdialect "C++17"
 		staticruntime "on"
 		systemversion "latest"
+		buildoptions {"/MP"}
 		
 		links
 		{
