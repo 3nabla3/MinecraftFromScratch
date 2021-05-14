@@ -90,7 +90,7 @@ void Layer2D::OnUpdate(float timestep)
 	m_IndexBuffer->Bind();
 	
 	glm::mat4 projection = *m_Camera;
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(m_xPos, m_yPos, m_zPos));
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Pos);
 	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	m_BlueTriangle->UploadUniformMat4("u_Projection", projection);
@@ -143,7 +143,7 @@ void Layer2D::OnEvent(Event& e)
 
 
 void Layer2D::UpdatePositions(float timestep) {
-	m_xPos += timestep * m_Mov.LR * m_MovSpeed;
-	m_yPos += timestep * m_Mov.UD * m_MovSpeed;
-	m_zPos += timestep * m_Mov.FB * m_MovSpeed;
+	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed;
+	m_Pos.y += timestep * m_Mov.UD * m_MovSpeed;
+	m_Pos.z += timestep * m_Mov.FB * m_MovSpeed;
 }

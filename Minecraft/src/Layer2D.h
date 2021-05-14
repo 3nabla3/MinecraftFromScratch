@@ -33,7 +33,7 @@ private:
 	
 	glm::mat4* m_Camera = nullptr;
 	
-	float m_xPos = -0.5f , m_yPos = -0.5f, m_zPos = -2.0f;
+	glm::vec3 m_Pos = glm::vec3(-0.5f, -0.5f, -2.0f);
 	float m_Angle = 0.0f;
 	
 	struct {
