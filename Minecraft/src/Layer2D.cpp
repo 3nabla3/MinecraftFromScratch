@@ -69,6 +69,7 @@ Layer2D::~Layer2D()
 	delete m_BlueTriangle;
 }
 
+
 void Layer2D::OnAttach()
 {
 	spdlog::trace("Layer {} was attached", m_DebugName);
@@ -88,7 +89,7 @@ void Layer2D::OnUpdate(float timestep)
 	
 	glm::mat4 projection = *m_Camera;
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(m_xPos, m_yPos, m_zPos));
-	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(1.0f, 1.0f, 1.0f));
+	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	m_BlueTriangle->UploadUniformMat4("u_Projection", projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
@@ -100,28 +101,30 @@ void Layer2D::OnUpdate(float timestep)
 
 void Layer2D::OnEvent(Event& e)
 {
+	// TODO: make the movements smoother
 	if (e.GetEventType() == EventType::KeyPressed) {
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
 
-		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
-			m_xPos -= 0.1f;
-		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
+		if (kpe.GetKeyCode() == GLFW_KEY_A)
 			m_xPos += 0.1f;
-		if (kpe.GetKeyCode() == GLFW_KEY_UP)
-			m_yPos += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_D)
+			m_xPos -= 0.1f;
+			
 		if (kpe.GetKeyCode() == GLFW_KEY_DOWN)
+			m_yPos += 0.1f;
+		if (kpe.GetKeyCode() == GLFW_KEY_UP)
 			m_yPos -= 0.1f;
 			
-		if (kpe.GetKeyCode() == GLFW_KEY_COMMA)
+		if (kpe.GetKeyCode() == GLFW_KEY_W)
 			m_zPos += 0.1f;
-		if (kpe.GetKeyCode() == GLFW_KEY_PERIOD)
+		if (kpe.GetKeyCode() == GLFW_KEY_S)
 			m_zPos -= 0.1f;
 			
-		spdlog::info("The zPosition is {}", m_zPos);
+//		spdlog::info("The zPosition is {}", m_zPos);
 
-		if (kpe.GetKeyCode() == GLFW_KEY_LEFT_BRACKET)
+		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
 			m_Angle += 0.1f;
-		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT_BRACKET)
+		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
 			m_Angle -= 0.1f;
 	}
 }
