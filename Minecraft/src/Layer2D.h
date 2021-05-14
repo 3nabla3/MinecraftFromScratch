@@ -20,6 +20,8 @@ public:
 	virtual void OnDetach();
 	virtual void OnUpdate(float timestep);
 	virtual void OnEvent(Event& e);
+	
+	void UpdatePositions(float timestep);
 private:
 	std::string m_DebugName;
 
@@ -33,4 +35,12 @@ private:
 	
 	float m_xPos = -0.5f , m_yPos = -0.5f, m_zPos = -2.0f;
 	float m_Angle = 0.0f;
+	
+	struct {
+		int LR = 0;
+		int UD = 0;
+		int FB = 0;
+	} m_Mov;
+	
+	float m_MovSpeed = 1;
 };

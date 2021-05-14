@@ -83,6 +83,8 @@ void Layer2D::OnDetach()
 
 void Layer2D::OnUpdate(float timestep)
 {
+	UpdatePositions(timestep);
+	
 	m_BlueTriangle->Use();
 	m_Vao->Bind();
 	m_IndexBuffer->Bind();
@@ -106,25 +108,42 @@ void Layer2D::OnEvent(Event& e)
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
 
 		if (kpe.GetKeyCode() == GLFW_KEY_A)
-			m_xPos += 0.1f;
+			m_Mov.LR = 1;
 		if (kpe.GetKeyCode() == GLFW_KEY_D)
-			m_xPos -= 0.1f;
+			m_Mov.LR = -1;
 			
 		if (kpe.GetKeyCode() == GLFW_KEY_DOWN)
-			m_yPos += 0.1f;
+			m_Mov.UD = 1;
 		if (kpe.GetKeyCode() == GLFW_KEY_UP)
-			m_yPos -= 0.1f;
-			
+			m_Mov.UD = -1;
+
 		if (kpe.GetKeyCode() == GLFW_KEY_W)
-			m_zPos += 0.1f;
+			m_Mov.FB = 1;
 		if (kpe.GetKeyCode() == GLFW_KEY_S)
-			m_zPos -= 0.1f;
-			
-//		spdlog::info("The zPosition is {}", m_zPos);
+			m_Mov.FB = -1;
 
 		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
 			m_Angle += 0.1f;
 		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
 			m_Angle -= 0.1f;
 	}
+	
+	if (e.GetEventType() == EventType::KeyReleased) {
+		KeyReleasedEvent& kre = (KeyReleasedEvent&)e;
+		if (kre.GetKeyCode() == GLFW_KEY_A || kre.GetKeyCode() == GLFW_KEY_D)
+			m_Mov.LR = 0;
+		
+		if (kre.GetKeyCode() == GLFW_KEY_DOWN || kre.GetKeyCode() == GLFW_KEY_UP)
+			m_Mov.UD = 0;
+
+		if (kre.GetKeyCode() == GLFW_KEY_W || kre.GetKeyCode() == GLFW_KEY_S)
+			m_Mov.FB = 0;
+	}
+}
+
+
+void Layer2D::UpdatePositions(float timestep) {
+	m_xPos += timestep * m_Mov.LR * m_MovSpeed;
+	m_yPos += timestep * m_Mov.UD * m_MovSpeed;
+	m_zPos += timestep * m_Mov.FB * m_MovSpeed;
 }
