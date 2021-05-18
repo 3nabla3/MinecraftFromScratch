@@ -1,12 +1,12 @@
 #include "pch.h"
 
-#include "Layer2D.h"
+#include "Layer3D.h"
 #include "Application.h"
 
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
 
-Layer2D::Layer2D(const std::string& name)
+Layer3D::Layer3D(const std::string& name)
 	:Layer(name)
 {
 	spdlog::trace("Layer {} was created", m_DebugName);
@@ -55,10 +55,10 @@ Layer2D::Layer2D(const std::string& name)
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
 	
-	m_Camera = new glm::mat4(glm::perspective(45.0f, 640.0f/480.0f, 0.1f, 150.0f));
+	m_Projection = new glm::mat4(glm::perspective(45.0f, 640.0f/480.0f, 0.1f, 150.0f));
 }
 
-Layer2D::~Layer2D()
+Layer3D::~Layer3D()
 {
 	spdlog::trace("Layer {} was destroyed", m_DebugName);
 		
@@ -70,18 +70,18 @@ Layer2D::~Layer2D()
 }
 
 
-void Layer2D::OnAttach()
+void Layer3D::OnAttach()
 {
 	spdlog::trace("Layer {} was attached", m_DebugName);
 }
 
-void Layer2D::OnDetach()
+void Layer3D::OnDetach()
 {
 	spdlog::trace("Layer {} was detached", m_DebugName);
 
 }
 
-void Layer2D::OnUpdate(float timestep)
+void Layer3D::OnUpdate(float timestep)
 {
 	UpdatePositions(timestep);
 	
@@ -89,11 +89,10 @@ void Layer2D::OnUpdate(float timestep)
 	m_Vao->Bind();
 	m_IndexBuffer->Bind();
 	
-	glm::mat4 projection = *m_Camera;
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Pos);
 	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 1.0f, 0.0f));
 	
-	m_BlueTriangle->UploadUniformMat4("u_Projection", projection);
+	m_BlueTriangle->UploadUniformMat4("u_Projection", *m_Projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
 
@@ -101,7 +100,7 @@ void Layer2D::OnUpdate(float timestep)
 	GLCall(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr)); // 6 sides * two triangles per side
 }
 
-void Layer2D::OnEvent(Event& e)
+void Layer3D::OnEvent(Event& e)
 {
 	// TODO: make the movements smoother
 	if (e.GetEventType() == EventType::KeyPressed) {
@@ -123,9 +122,9 @@ void Layer2D::OnEvent(Event& e)
 			m_Mov.FB = -1;
 
 		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
-			m_Angle += 0.1f;
+			m_AngleDir = -1;
 		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
-			m_Angle -= 0.1f;
+			m_AngleDir = 1;
 	}
 	
 	if (e.GetEventType() == EventType::KeyReleased) {
@@ -138,12 +137,21 @@ void Layer2D::OnEvent(Event& e)
 
 		if (kre.GetKeyCode() == GLFW_KEY_W || kre.GetKeyCode() == GLFW_KEY_S)
 			m_Mov.FB = 0;
+			
+		if (kre.GetKeyCode() == GLFW_KEY_RIGHT || kre.GetKeyCode() == GLFW_KEY_LEFT)
+			m_AngleDir = 0;
 	}
 }
 
 
-void Layer2D::UpdatePositions(float timestep) {
-	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed;
+void Layer3D::UpdatePositions(float timestep) {
+	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed * glm::cos(m_Angle);
+	m_Pos.z += timestep * m_Mov.LR * m_MovSpeed * glm::sin(m_Angle);
+
 	m_Pos.y += timestep * m_Mov.UD * m_MovSpeed;
-	m_Pos.z += timestep * m_Mov.FB * m_MovSpeed;
+
+	m_Pos.z += timestep * m_Mov.FB * m_MovSpeed * glm::cos(m_Angle);
+	m_Pos.x -= timestep * m_Mov.FB * m_MovSpeed * glm::sin(m_Angle);
+	
+	m_Angle += timestep * m_AngleDir * m_AngleSpeed;
 }

@@ -22,7 +22,8 @@ project "Minecraft"
 	files 
 	{
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/src/**.h"
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/res/**",
 	}
 
 	includedirs

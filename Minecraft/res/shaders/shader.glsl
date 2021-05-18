@@ -11,7 +11,7 @@ out vec3 i_color;
 void main()
 {
 	i_color = position;
-	gl_Position = u_Projection * u_Translation * u_Rotation * vec4(position.x, position.y, position.z, 1.0);
+	gl_Position = u_Projection * u_Rotation * u_Translation * vec4(position.xyz, 1.0);
 }
 
 
@@ -22,5 +22,5 @@ layout(location = 0) out vec4 color;
 in vec3 i_color;
 void main()
 {
-	color = vec4(1.0, 0.0, 0.0, 1.0);
+	color = vec4(i_color, 0.5);
 }
