@@ -4,7 +4,7 @@
 #include "Events/KeyEvent.h"
 #include "Events/ApplicationEvent.h"
 
-#include "Layer2D.h"
+#include "Layer3D.h"
 
 #define BIND_EVENT_FN(func) std::bind(&func, this, std::placeholders::_1)
 
@@ -30,7 +30,7 @@ Application::Application()
 
 	m_Window->SetVSync(0);
 	
-	m_Layers.push_back(new Layer2D("Layer2d"));
+	m_Layers.push_back(new Layer3D("Layer2d"));
 }
 
 void Application::OnUpdate(float timestep)
