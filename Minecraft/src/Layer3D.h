@@ -10,11 +10,11 @@
 #include "OpenGL/VertexBufferLayout.h"
 #include "OpenGL/Shader.h"
 
-class Layer2D : public Layer
+class Layer3D : public Layer
 {
 public:
-	Layer2D(const std::string& name);
-	~Layer2D();
+	Layer3D(const std::string& name);
+	~Layer3D();
 	
 	virtual void OnAttach();
 	virtual void OnDetach();
@@ -31,10 +31,11 @@ private:
 	VertexBufferLayout* m_Layout = nullptr;
 	Shader* m_BlueTriangle = nullptr;
 	
-	glm::mat4* m_Camera = nullptr;
+	glm::mat4* m_Projection = nullptr;
 	
 	glm::vec3 m_Pos = glm::vec3(-0.5f, -0.5f, -2.0f);
 	float m_Angle = 0.0f;
+	int m_AngleDir = 0;
 	
 	struct {
 		int LR = 0;
@@ -42,5 +43,6 @@ private:
 		int FB = 0;
 	} m_Mov;
 	
-	float m_MovSpeed = 1;
+	float m_MovSpeed = 1.f;
+	float m_AngleSpeed = 1.f;
 };
