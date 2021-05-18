@@ -26,7 +26,12 @@ Application::Application()
 	spdlog::trace("Creating window");
 	m_Window = new Window();
 	m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
-	spdlog::info(glGetString(GL_VERSION));
+	spdlog::info("Version:");
+	spdlog::info("\t {}", glGetString(GL_VERSION));
+	spdlog::info("Vendor:");
+	spdlog::info("\t {}", glGetString(GL_VENDOR));
+	spdlog::info("Renderer:");
+	spdlog::info("\t {}", glGetString(GL_RENDERER));
 
 	m_Window->SetVSync(0);
 	
