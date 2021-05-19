@@ -34,8 +34,8 @@ private:
 	glm::mat4* m_Projection = nullptr;
 	
 	glm::vec3 m_Pos = glm::vec3(-0.5f, -0.5f, -2.0f);
-	float m_Angle = 0.0f;
-	int m_AngleDir = 0;
+	glm::vec2 m_Angle = glm::vec2(0.f, 0.f);
+	glm::vec2 m_PrevMousePos = glm::vec2(-1.f, -1.f);
 	
 	struct {
 		int LR = 0;
@@ -44,5 +44,5 @@ private:
 	} m_Mov;
 	
 	float m_MovSpeed = 1.f;
-	float m_AngleSpeed = 1.f;
+	float m_AngleSpeed = 0.01f;
 };

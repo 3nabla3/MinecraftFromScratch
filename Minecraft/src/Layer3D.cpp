@@ -5,6 +5,7 @@
 
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
 
 Layer3D::Layer3D(const std::string& name)
 	:Layer(name)
@@ -90,7 +91,8 @@ void Layer3D::OnUpdate(float timestep)
 	m_IndexBuffer->Bind();
 	
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Pos);
-	glm::mat4 rotation = glm::rotate(m_Angle, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotation = glm::rotate(m_Angle.y, glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, m_Angle.x, glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	m_BlueTriangle->UploadUniformMat4("u_Projection", *m_Projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
@@ -102,56 +104,79 @@ void Layer3D::OnUpdate(float timestep)
 
 void Layer3D::OnEvent(Event& e)
 {
-	// TODO: make the movements smoother
+	if (e.GetEventType() == EventType::MouseMoved) {
+		MouseMovedEvent& mme = (MouseMovedEvent&)e;
+		
+		glm::vec2 currentPos = glm::vec2(mme.GetX(), mme.GetY());
+		glm::vec2 delta = currentPos - m_PrevMousePos;
+		
+		// do not take the mouse position into account on the first frame
+		if (m_PrevMousePos.x != -1.f)
+			m_Angle.x += delta.x * m_AngleSpeed;
+		if (m_PrevMousePos.x != -1.f)
+			m_Angle.y += delta.y * m_AngleSpeed;
+			
+		spdlog::info("{}, {}", delta.x, delta.y);
+		m_PrevMousePos = currentPos;
+	}
+	
 	if (e.GetEventType() == EventType::KeyPressed) {
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
-
-		if (kpe.GetKeyCode() == GLFW_KEY_A)
-			m_Mov.LR = 1;
-		if (kpe.GetKeyCode() == GLFW_KEY_D)
-			m_Mov.LR = -1;
+		
+		switch (kpe.GetKeyCode()) {
+			case GLFW_KEY_A:			
+				m_Mov.LR = 1;
+				break;
+			case GLFW_KEY_D:
+				m_Mov.LR = -1;
+				break;
 			
-		if (kpe.GetKeyCode() == GLFW_KEY_DOWN)
-			m_Mov.UD = 1;
-		if (kpe.GetKeyCode() == GLFW_KEY_UP)
-			m_Mov.UD = -1;
-
-		if (kpe.GetKeyCode() == GLFW_KEY_W)
-			m_Mov.FB = 1;
-		if (kpe.GetKeyCode() == GLFW_KEY_S)
-			m_Mov.FB = -1;
-
-		if (kpe.GetKeyCode() == GLFW_KEY_LEFT)
-			m_AngleDir = -1;
-		if (kpe.GetKeyCode() == GLFW_KEY_RIGHT)
-			m_AngleDir = 1;
+			case GLFW_KEY_DOWN:			
+				m_Mov.UD = 1;
+				break;
+			case GLFW_KEY_UP:
+				m_Mov.UD = -1;
+				break;
+				
+			case GLFW_KEY_W:			
+				m_Mov.FB = 1;
+				break;
+			case GLFW_KEY_S:
+				m_Mov.FB = -1;
+				break;
+			
+		}
+		
 	}
 	
 	if (e.GetEventType() == EventType::KeyReleased) {
 		KeyReleasedEvent& kre = (KeyReleasedEvent&)e;
-		if (kre.GetKeyCode() == GLFW_KEY_A || kre.GetKeyCode() == GLFW_KEY_D)
-			m_Mov.LR = 0;
 		
-		if (kre.GetKeyCode() == GLFW_KEY_DOWN || kre.GetKeyCode() == GLFW_KEY_UP)
-			m_Mov.UD = 0;
+		switch (kre.GetKeyCode()) {
+			case GLFW_KEY_A:
+			case GLFW_KEY_D:
+				m_Mov.LR = 0;
+				break;
+			case GLFW_KEY_DOWN:
+			case GLFW_KEY_UP:
+				m_Mov.UD = 0;
+				break;
+			case GLFW_KEY_W:
+			case GLFW_KEY_S:
+				m_Mov.FB = 0;
+				break;
+		}
 
-		if (kre.GetKeyCode() == GLFW_KEY_W || kre.GetKeyCode() == GLFW_KEY_S)
-			m_Mov.FB = 0;
-			
-		if (kre.GetKeyCode() == GLFW_KEY_RIGHT || kre.GetKeyCode() == GLFW_KEY_LEFT)
-			m_AngleDir = 0;
 	}
 }
 
 
 void Layer3D::UpdatePositions(float timestep) {
-	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed * glm::cos(m_Angle);
-	m_Pos.z += timestep * m_Mov.LR * m_MovSpeed * glm::sin(m_Angle);
+	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed * glm::cos(m_Angle.x);
+	m_Pos.z += timestep * m_Mov.LR * m_MovSpeed * glm::sin(m_Angle.x);
 
 	m_Pos.y += timestep * m_Mov.UD * m_MovSpeed;
 
-	m_Pos.z += timestep * m_Mov.FB * m_MovSpeed * glm::cos(m_Angle);
-	m_Pos.x -= timestep * m_Mov.FB * m_MovSpeed * glm::sin(m_Angle);
-	
-	m_Angle += timestep * m_AngleDir * m_AngleSpeed;
+	m_Pos.z += timestep * m_Mov.FB * m_MovSpeed * glm::cos(m_Angle.x);
+	m_Pos.x -= timestep * m_Mov.FB * m_MovSpeed * glm::sin(m_Angle.x);
 }

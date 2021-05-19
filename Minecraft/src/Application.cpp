@@ -33,7 +33,8 @@ Application::Application()
 	spdlog::info("Renderer:");
 	spdlog::info("\t {}", glGetString(GL_RENDERER));
 
-	m_Window->SetVSync(0);
+	m_Window->SetVSync(false);
+	m_Window->EnableCursor(false);
 	
 	m_Layers.push_back(new Layer3D("Layer2d"));
 }
@@ -51,6 +52,18 @@ void Application::OnEvent(Event& e)
 {
 //	spdlog::trace("Event was captured: {}", e.ToString());
 
+	if (e.GetEventType() == EventType::KeyPressed) {
+		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
+		
+		switch (kpe.GetKeyCode()) {
+			case GLFW_KEY_ESCAPE:
+					bool prevState = m_Window->IsCursorEnabled();
+					spdlog::warn("State changed {}", prevState);
+					m_Window->EnableCursor(!prevState);
+					break;
+		}
+		
+	}
 	EventDispacher dispacher(e);
 	dispacher.Dispach<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 

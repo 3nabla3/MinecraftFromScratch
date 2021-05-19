@@ -109,7 +109,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string& label
 
 void Window::SetVSync(bool enable)
 {
-	glfwSwapInterval(enable ? 1 : 0);
+	glfwSwapInterval(enable);
 	m_Data.VSync = enable;
 }
 
@@ -117,4 +117,5 @@ void Window::EnableCursor(bool enable)
 {
 	if (enable) glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	else		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	m_Data.CursorEnabled = enable;
 }
