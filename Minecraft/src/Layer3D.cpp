@@ -56,7 +56,7 @@ Layer3D::Layer3D(const std::string& name)
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
 	
-	m_Projection = new glm::mat4(glm::perspective(45.0f, 640.0f/480.0f, 0.1f, 150.0f));
+	m_Projection = glm::mat4(glm::perspective(45.0f, 640.0f/480.0f, 0.1f, 150.0f));
 }
 
 Layer3D::~Layer3D()
@@ -82,8 +82,23 @@ void Layer3D::OnDetach()
 
 }
 
+static int framecount = 0;
+
+static void worker(Shader* shader, glm::vec3& position, glm::vec2& angle, glm::mat4& projection)
+{
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 rotation = glm::rotate(angle.y, glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, angle.x, glm::vec3(0.0f, 1.0f, 0.0f));
+	
+	shader->UploadUniformMat4("u_Projection", projection);
+	shader->UploadUniformMat4("u_Translation", translation);
+	shader->UploadUniformMat4("u_Rotation", rotation);
+}
+
 void Layer3D::OnUpdate(float timestep)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	UpdatePositions(timestep);
 	
 	m_BlueTriangle->Use();
@@ -94,12 +109,30 @@ void Layer3D::OnUpdate(float timestep)
 	glm::mat4 rotation = glm::rotate(m_Angle.y, glm::vec3(1.0f, 0.0f, 0.0f));
 	rotation = glm::rotate(rotation, m_Angle.x, glm::vec3(0.0f, 1.0f, 0.0f));
 	
-	m_BlueTriangle->UploadUniformMat4("u_Projection", *m_Projection);
+	m_BlueTriangle->UploadUniformMat4("u_Projection", m_Projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	GLCall(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr)); // 6 sides * two triangles per side
+//	std::thread t(worker, m_BlueTriangle, std::ref(m_Pos), std::ref(m_Angle), std::ref(m_Projection));
+//	t.join();
+	for (int i = 0; i < 20; i+=2) {
+//		std::thread t(worker, i, m_BlueTriangle);
+//		t.join();
+		for (int j = 0; j < 20; j+=2)
+			for (int k = 0; k < 20; k+=2)
+			{
+				glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3((float)i, (float)k, (float)j));
+				m_BlueTriangle->UploadUniformMat4("u_Position", position);
+				GLCall(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr)); // 6 sides * two triangles per side
+			}
+	}
+	
+	
+	framecount++;
+	if (framecount == 1000) {
+		spdlog::info("fps: {}", 1.0f/timestep);
+		framecount = 0;
+	}
 }
 
 void Layer3D::OnEvent(Event& e)
@@ -115,13 +148,15 @@ void Layer3D::OnEvent(Event& e)
 			m_Angle.x += delta.x * m_AngleSpeed;
 		if (m_PrevMousePos.x != -1.f)
 			m_Angle.y += delta.y * m_AngleSpeed;
-			
-		spdlog::info("{}, {}", delta.x, delta.y);
+		
+		// make sure the camera cannot flip backwards
+		m_Angle.y = std::clamp(m_Angle.y, -glm::pi<float>() / 2, glm::pi<float>() / 2);
 		m_PrevMousePos = currentPos;
 	}
 	
 	if (e.GetEventType() == EventType::KeyPressed) {
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
+		spdlog::warn(kpe.GetKeyCode());
 		
 		switch (kpe.GetKeyCode()) {
 			case GLFW_KEY_A:			

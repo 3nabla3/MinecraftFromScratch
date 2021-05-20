@@ -31,8 +31,7 @@ private:
 	VertexBufferLayout* m_Layout = nullptr;
 	Shader* m_BlueTriangle = nullptr;
 	
-	glm::mat4* m_Projection = nullptr;
-	
+	glm::mat4 m_Projection;
 	glm::vec3 m_Pos = glm::vec3(-0.5f, -0.5f, -2.0f);
 	glm::vec2 m_Angle = glm::vec2(0.f, 0.f);
 	glm::vec2 m_PrevMousePos = glm::vec2(-1.f, -1.f);
@@ -43,6 +42,6 @@ private:
 		int FB = 0;
 	} m_Mov;
 	
-	float m_MovSpeed = 1.f;
+	float m_MovSpeed = 5.f;
 	float m_AngleSpeed = 0.01f;
 };

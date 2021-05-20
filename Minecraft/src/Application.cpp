@@ -62,10 +62,15 @@ void Application::OnEvent(Event& e)
 		
 		switch (kpe.GetKeyCode()) {
 			case GLFW_KEY_ESCAPE:
-					bool prevState = m_Window->IsCursorEnabled();
-					spdlog::warn("State changed {}", prevState);
-					m_Window->EnableCursor(!prevState);
-					break;
+			{
+				bool prevState = m_Window->IsCursorEnabled();
+				spdlog::warn("State changed {}", prevState);
+				m_Window->EnableCursor(!prevState);
+				break;
+			}
+			case GLFW_KEY_F1:
+				m_Running = false;
+				break;
 		}
 		
 	}
