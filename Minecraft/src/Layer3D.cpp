@@ -42,7 +42,7 @@ Layer3D::Layer3D(const std::string& name)
 
 	m_Vao = new VertexArray();
 
-	m_Buffer = new VertexBuffer(vertices, 8 * 3 * sizeof(float));
+	m_Buffer = new VertexBuffer(vertices, 8 * 4 * sizeof(float));
 	m_Buffer->Bind();
 
 	m_Layout = new VertexBufferLayout({

@@ -37,6 +37,9 @@ Application::Application()
 	m_Window->EnableCursor(false);
 	
 	m_Layers.push_back(new Layer3D("Layer2d"));
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 }
 
 void Application::OnUpdate(float timestep)
