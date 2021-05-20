@@ -131,10 +131,10 @@ void Layer3D::OnEvent(Event& e)
 				m_Mov.LR = -1;
 				break;
 			
-			case GLFW_KEY_DOWN:			
+			case GLFW_KEY_LEFT_SHIFT:			
 				m_Mov.UD = 1;
 				break;
-			case GLFW_KEY_UP:
+			case GLFW_KEY_SPACE:
 				m_Mov.UD = -1;
 				break;
 				
@@ -157,8 +157,8 @@ void Layer3D::OnEvent(Event& e)
 			case GLFW_KEY_D:
 				m_Mov.LR = 0;
 				break;
-			case GLFW_KEY_DOWN:
-			case GLFW_KEY_UP:
+			case GLFW_KEY_LEFT_SHIFT:
+			case GLFW_KEY_SPACE:
 				m_Mov.UD = 0;
 				break;
 			case GLFW_KEY_W:
