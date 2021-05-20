@@ -40,6 +40,8 @@ Application::Application()
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+
+	glEnable(GL_DEPTH_TEST); // makes the objects in the back render before the objects in the front
 }
 
 void Application::OnUpdate(float timestep)

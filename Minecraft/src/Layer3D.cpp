@@ -98,7 +98,7 @@ void Layer3D::OnUpdate(float timestep)
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLCall(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr)); // 6 sides * two triangles per side
 }
 
