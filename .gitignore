@@ -9,6 +9,7 @@ Minecraft/vendor/Glad/bin-int
 .codelite/
 .build-debug/
 .build-release/
+.build-dist/
 
 *.sln
 *.user
@@ -23,7 +24,7 @@ Minecraft/vendor/Glad/bin-int
 Makefile
 Minecraft/Minecraft.txt
 Minecraft/vendor/GLFW/GLFW.txt
-Minecraft/vendor/GLFW/Glad.txt
+Minecraft/vendor/Glad/Glad.txt
 Minecraft/src/pch.h.gch
 
 
