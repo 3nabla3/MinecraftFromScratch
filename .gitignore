@@ -22,6 +22,8 @@ Minecraft/vendor/Glad/bin-int
 *.project
 Makefile
 Minecraft/Minecraft.txt
+Minecraft/vendor/GLFW/GLFW.txt
+Minecraft/vendor/GLFW/Glad.txt
 Minecraft/src/pch.h.gch
 
 
