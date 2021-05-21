@@ -19,9 +19,11 @@ void main()
 #shader fragment
 #version 440
 layout(location = 0) out vec4 color;
-	
+
+uniform float u_rChannel;
+
 in vec3 i_color;
 void main()
 {
-	color = vec4(i_color, 1);
+	color = vec4(u_rChannel, i_color.gb, 1);
 }

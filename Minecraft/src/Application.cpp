@@ -55,8 +55,6 @@ void Application::OnUpdate(float timestep)
 
 void Application::OnEvent(Event& e)
 {
-//	spdlog::trace("Event was captured: {}", e.ToString());
-
 	if (e.GetEventType() == EventType::KeyPressed) {
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
 		
@@ -64,7 +62,6 @@ void Application::OnEvent(Event& e)
 			case GLFW_KEY_ESCAPE:
 			{
 				bool prevState = m_Window->IsCursorEnabled();
-				spdlog::warn("State changed {}", prevState);
 				m_Window->EnableCursor(!prevState);
 				break;
 			}

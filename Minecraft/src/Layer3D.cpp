@@ -95,6 +95,8 @@ static void worker(Shader* shader, glm::vec3& position, glm::vec2& angle, glm::m
 	shader->UploadUniformMat4("u_Rotation", rotation);
 }
 
+static float rChannel = 0.0f;
+
 void Layer3D::OnUpdate(float timestep)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -112,6 +114,11 @@ void Layer3D::OnUpdate(float timestep)
 	m_BlueTriangle->UploadUniformMat4("u_Projection", m_Projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
+	
+	rChannel += 0.01f;
+	if (rChannel > 1.0f) rChannel = 0.0f;
+
+	m_BlueTriangle->UploadUniformf("u_rChannel", rChannel);
 
 //	std::thread t(worker, m_BlueTriangle, std::ref(m_Pos), std::ref(m_Angle), std::ref(m_Projection));
 //	t.join();
@@ -156,7 +163,6 @@ void Layer3D::OnEvent(Event& e)
 	
 	if (e.GetEventType() == EventType::KeyPressed) {
 		KeyPressedEvent& kpe = (KeyPressedEvent&)e;
-		spdlog::warn(kpe.GetKeyCode());
 		
 		switch (kpe.GetKeyCode()) {
 			case GLFW_KEY_A:			

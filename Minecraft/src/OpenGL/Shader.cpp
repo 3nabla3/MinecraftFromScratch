@@ -100,6 +100,13 @@ void Shader::UploadUniformMat4(const std::string& uniformName, const glm::mat4& 
 	GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix)));
 }
 
+void Shader::UploadUniformf(const std::string& uniformName, float value) const
+{
+	int location = GetUniformLocation(uniformName);
+
+	GLCall(glUniform1f(location, value));
+}
+
 unsigned int Shader::GetUniformLocation(const std::string& uniformName) const
 {
 	GLCall(int location = glGetUniformLocation(m_Id, uniformName.c_str()));
