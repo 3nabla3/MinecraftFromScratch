@@ -21,8 +21,14 @@ public:
 	virtual void OnUpdate(float timestep);
 	virtual void OnEvent(Event& e);
 	
-	void UpdatePositions(float timestep);
 private:
+	void UpdatePositions(float timestep);
+	void UpdateDirection(int negative_dir_key, int positive_dir_key, int& axis);
+//	
+//	void UpdateLRdirection();
+//	void UpdateUDdirection();
+//	void UpdateFBdirection();
+	
 	std::string m_DebugName;
 
 	VertexArray* m_Vao = nullptr;
@@ -36,7 +42,19 @@ private:
 	glm::vec2 m_Angle = glm::vec2(0.f, 0.f);
 	glm::vec2 m_PrevMousePos = glm::vec2(-1.f, -1.f);
 	
+	std::unordered_map<int, bool> m_KeyDown = {
+		{GLFW_KEY_A, false},
+		{GLFW_KEY_D, false},
+		
+		{GLFW_KEY_W, false},
+		{GLFW_KEY_S, false},
+		
+		{GLFW_KEY_LEFT_SHIFT, false},
+		{GLFW_KEY_SPACE, false},
+	};
+	
 	struct {
+		// left-right / up-down / forward-backward
 		int LR = 0;
 		int UD = 0;
 		int FB = 0;

@@ -12,7 +12,7 @@ out vec3 i_color;
 void main()
 {
 	i_color = vertex;
-	gl_Position = u_Projection * u_Rotation * u_Translation * u_Position * vec4(vertex.xyz, 1.0);
+	gl_Position = u_Projection * u_Rotation * u_Position * u_Translation * vec4(vertex.xyz, 1.0);
 }
 
 
