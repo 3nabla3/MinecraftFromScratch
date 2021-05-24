@@ -13,10 +13,6 @@ Layer3D::Layer3D(const std::string& name)
 	spdlog::trace("Layer {} was created", m_DebugName);
 	
 	float vertices[] = {
-//		-0.5f, -0.5f,
-//		 0.5f, -0.5f,
-//		 0.5f,  0.5f,
-//		-0.5f,  0.5f
 		0.f,  0.f,  0.f, // 0
 		0.f,  0.f,  1.f, // 1
 		0.f,  1.f,  0.f, // 2
@@ -70,7 +66,6 @@ Layer3D::~Layer3D()
 	delete m_BlueTriangle;
 }
 
-
 void Layer3D::OnAttach()
 {
 	spdlog::trace("Layer {} was attached", m_DebugName);
@@ -83,13 +78,6 @@ void Layer3D::OnDetach()
 }
 
 static int framecount = 0;
-
-static void worker(std::atomic<int>* num)
-{
-	(*num)++;
-	spdlog::error(*num);
-}
-
 static float rChannel = 0.f;
 static float delta = 0.001f;
 
@@ -103,18 +91,10 @@ void Layer3D::OnUpdate(float timestep)
 	m_Vao->Bind();
 	m_IndexBuffer->Bind();
 	
-	// test to see how data sharing works across threads
-	std::atomic<int> num = 10;
-	num++;
-	std::thread t(worker, &num);
-	t.join();
-	spdlog::info(num);
-	// ------------------
-	
 	glm::mat4 translation = glm::translate(glm::mat4(1.f), m_Pos);
 	glm::mat4 rotation = glm::rotate(m_Angle.y, glm::vec3(1.f, 0.f, 0.f));
 	rotation = glm::rotate(rotation, m_Angle.x, glm::vec3(0.f, 1.f, 0.f));
-	
+
 	m_BlueTriangle->UploadUniformMat4("u_Projection", m_Projection);
 	m_BlueTriangle->UploadUniformMat4("u_Translation", translation);
 	m_BlueTriangle->UploadUniformMat4("u_Rotation", rotation);
@@ -124,11 +104,7 @@ void Layer3D::OnUpdate(float timestep)
 
 	m_BlueTriangle->UploadUniformf("u_rChannel", rChannel);
 
-//	std::thread t(worker, m_BlueTriangle, std::ref(m_Pos), std::ref(m_Angle), std::ref(m_Projection));
-//	t.join();
 	for (int i = 0; i < 20; i+=2) {
-//		std::thread t(worker, i, m_BlueTriangle);
-//		t.join();
 		for (int j = 0; j < 20; j+=2)
 			for (int k = 0; k < 20; k+=2)
 			{
@@ -179,7 +155,6 @@ void Layer3D::OnEvent(Event& e)
 	UpdateDirection(GLFW_KEY_LEFT_SHIFT, GLFW_KEY_SPACE, m_Mov.UD);
 }
 
-
 void Layer3D::UpdatePositions(float timestep) {
 	m_Pos.x += timestep * m_Mov.LR * m_MovSpeed * glm::cos(m_Angle.x);
 	m_Pos.z += timestep * m_Mov.LR * m_MovSpeed * glm::sin(m_Angle.x);
@@ -190,9 +165,7 @@ void Layer3D::UpdatePositions(float timestep) {
 	m_Pos.x += timestep * m_Mov.FB * m_MovSpeed * glm::sin(m_Angle.x);
 }
 
-
-void Layer3D::UpdateDirection(int negative_dir_key, int positive_dir_key, int& axis)
-{
+void Layer3D::UpdateDirection(int negative_dir_key, int positive_dir_key, int& axis){
 	if (m_KeyDown[negative_dir_key])
 		if (m_KeyDown[positive_dir_key])
 			axis = 0;

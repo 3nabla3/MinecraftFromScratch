@@ -18,7 +18,7 @@
 
 static void GLClearError()
 {
-	while (glGetError() != GL_NO_ERROR);
+	//while (glGetError() != GL_NO_ERROR);
 }
 
 static bool GLLogCall(const std::string& signature, const std::string& filename, int linenumber)
