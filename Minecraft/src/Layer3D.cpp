@@ -52,7 +52,8 @@ Layer3D::Layer3D(const std::string& name)
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
 	
-	m_Projection = glm::mat4(glm::perspective(45.f, 640.f/480.f, 0.1f, 150.f));
+	auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
+	m_Projection = glm::mat4(glm::perspective(45.f, (float)width/height, 0.1f, 150.f));
 }
 
 Layer3D::~Layer3D()

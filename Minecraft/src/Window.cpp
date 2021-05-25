@@ -6,7 +6,7 @@
 #include "Events/MouseEvent.h"
 #include "Events/ApplicationEvent.h"
 
-Window::Window(unsigned int width, unsigned int height, const std::string& label)
+Window::Window(const std::string& label, unsigned int width, unsigned int height)
 {
 	m_Data.Title = label;
 	m_Data.Width = width;
@@ -18,7 +18,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string& label
 		return;
 	}
 
-	m_Window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	m_Window = glfwCreateWindow(width, height, label.c_str(), NULL, NULL);
 
 	if (!m_Window)
 	{

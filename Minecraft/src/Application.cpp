@@ -24,7 +24,7 @@ Application::Application()
 	s_Instance = this;
 
 	spdlog::trace("Creating window");
-	m_Window = new Window();
+	m_Window = new Window("Minecraft", 1000, 1000);
 	m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	spdlog::info("Version:");
 	spdlog::info("\t {}", glGetString(GL_VERSION));

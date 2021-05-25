@@ -7,10 +7,12 @@ class Window
 public:
 	using EventCallbackFn = std::function<void(Event&)>;
 
-	Window(unsigned int width=640, unsigned int height=480, const std::string& label = std::string("GLFW"));
+	Window(const std::string& label = std::string("GLFW"), unsigned int width=640, unsigned int height=480);
 
 	inline unsigned int GetWidth() const { return m_Data.Width; }
 	inline unsigned int GetHeight() const { return m_Data.Height; }
+	inline std::pair<unsigned int, unsigned int> GetDimentions() const { return { GetWidth(), GetHeight() }; }
+
 	inline bool IsVSync() const { return m_Data.VSync; }
 	inline bool IsCursorEnabled() const { return m_Data.CursorEnabled; }
 
