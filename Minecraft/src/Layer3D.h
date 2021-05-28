@@ -20,6 +20,11 @@ public:
 	virtual void OnDetach();
 	virtual void OnUpdate(float timestep);
 	virtual void OnEvent(Event& e);
+
+	virtual bool OnKeyPressed(KeyPressedEvent& e);
+	virtual bool OnKeyReleased(KeyReleasedEvent& e);
+	virtual bool OnMouseMoved(MouseMovedEvent& e);
+	virtual bool OnWindowResize(WindowResizeEvent& e);
 	
 private:
 	void UpdatePositions(float timestep);

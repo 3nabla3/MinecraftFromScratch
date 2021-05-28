@@ -16,6 +16,7 @@ public:
 	~Application();
 
 	bool OnWindowClose(WindowCloseEvent& event);
+	bool OnWindowResize(WindowResizeEvent& event);
 	void OnUpdate(float timestep);
 	void OnEvent(Event& e);
 	void Run();

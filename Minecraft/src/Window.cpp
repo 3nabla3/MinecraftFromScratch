@@ -35,7 +35,9 @@ Window::Window(const std::string& label, unsigned int width, unsigned int height
 	glfwSetWindowUserPointer(m_Window, &m_Data);
 
 	glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
-		WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		data.Width = width;
+		data.Height = height;
 		WindowResizeEvent event(width, height);
 		data.EventCallback(event);
 	});

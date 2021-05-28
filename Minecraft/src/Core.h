@@ -16,6 +16,8 @@
 #endif
 #define GLCall(x) GLClearError(); x; ASSERT(GLLogCall(#x, __FILE__, __LINE__))
 
+#define BIND_EVENT_FN(func) std::bind(&func, this, std::placeholders::_1)
+
 static void GLClearError()
 {
 	//while (glGetError() != GL_NO_ERROR);

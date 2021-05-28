@@ -10,6 +10,7 @@ public:
 
 	inline unsigned int GetWidth() { return m_Width; }
 	inline unsigned int GetHeight() { return m_Height; }
+	inline std::pair<unsigned int, unsigned int> GetDimentions() { return { GetWidth(), GetHeight() }; }
 
 	std::string ToString() const
 	{

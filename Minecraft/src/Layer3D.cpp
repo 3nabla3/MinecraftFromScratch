@@ -124,33 +124,12 @@ void Layer3D::OnUpdate(float timestep)
 
 void Layer3D::OnEvent(Event& e)
 {
-	if (e.GetEventType() == EventType::MouseMoved) {
-		MouseMovedEvent& mme = (MouseMovedEvent&)e;
-		
-		glm::vec2 currentPos = glm::vec2(mme.GetX(), mme.GetY());
-		glm::vec2 delta = currentPos - m_PrevMousePos;
-		
-		// do not take the mouse position into account on the first frame
-		if (m_PrevMousePos.x != -1.f)
-			m_Angle.x += delta.x * m_AngleSpeed;
-		if (m_PrevMousePos.x != -1.f)
-			m_Angle.y += delta.y * m_AngleSpeed;
-		
-		// make sure the camera cannot flip backwards
-		m_Angle.y = std::clamp(m_Angle.y, -glm::pi<float>() / 2, glm::pi<float>() / 2);
-		m_PrevMousePos = currentPos;
-	}
-	
-	if (e.GetEventType() == EventType::KeyPressed) {
-		KeyPressedEvent& kpe = (KeyPressedEvent&)e;		
-		m_KeyDown[kpe.GetKeyCode()] = true;
-	}
-	
-	if (e.GetEventType() == EventType::KeyReleased) {
-		KeyReleasedEvent& kre = (KeyReleasedEvent&)e;
-		m_KeyDown[kre.GetKeyCode()] = false;
-	}
-	
+	EventDispacher dispacher(e);
+	dispacher.Dispach<KeyPressedEvent>(BIND_EVENT_FN(Layer3D::OnKeyPressed));
+	dispacher.Dispach<KeyReleasedEvent>(BIND_EVENT_FN(Layer3D::OnKeyReleased));
+	dispacher.Dispach<MouseMovedEvent>(BIND_EVENT_FN(Layer3D::OnMouseMoved));
+	dispacher.Dispach<WindowResizeEvent>(BIND_EVENT_FN(Layer3D::OnWindowResize));
+
 	UpdateDirection(GLFW_KEY_A, GLFW_KEY_D, m_Mov.LR);
 	UpdateDirection(GLFW_KEY_S, GLFW_KEY_W, m_Mov.FB);
 	UpdateDirection(GLFW_KEY_LEFT_SHIFT, GLFW_KEY_SPACE, m_Mov.UD);
@@ -176,4 +155,41 @@ void Layer3D::UpdateDirection(int negative_dir_key, int positive_dir_key, int& a
 		axis = -1;
 	else
 		axis = 0;
+}
+
+bool Layer3D::OnKeyPressed(KeyPressedEvent& e)
+{
+	m_KeyDown[e.GetKeyCode()] = true;
+	return true;
+}
+
+bool Layer3D::OnKeyReleased(KeyReleasedEvent& e)
+{
+	m_KeyDown[e.GetKeyCode()] = false;
+	return true;
+}
+
+bool Layer3D::OnMouseMoved(MouseMovedEvent& e)
+{
+	glm::vec2 currentPos = glm::vec2(e.GetX(), e.GetY());
+	glm::vec2 delta = currentPos - m_PrevMousePos;
+
+	// do not take the mouse position into account on the first frame
+	if (m_PrevMousePos.x != -1.f)
+		m_Angle.x += delta.x * m_AngleSpeed;
+	if (m_PrevMousePos.x != -1.f)
+		m_Angle.y += delta.y * m_AngleSpeed;
+
+	// make sure the camera cannot flip backwards
+	m_Angle.y = std::clamp(m_Angle.y, -glm::pi<float>() / 2, glm::pi<float>() / 2);
+	m_PrevMousePos = currentPos;
+	return true;
+}
+
+bool Layer3D::OnWindowResize(WindowResizeEvent& e)
+{
+	auto [x, y] = e.GetDimentions();
+	glViewport(0, 0, x, y);
+	m_Projection = glm::mat4(glm::perspective(45.f, (float)x / y, 0.1f, 150.f));
+	return true;
 }
