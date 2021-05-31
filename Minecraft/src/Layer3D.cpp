@@ -53,7 +53,7 @@ Layer3D::Layer3D(const std::string& name)
 	m_BlueTriangle->Use();
 	
 	auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
-	m_Projection = glm::mat4(glm::perspective(45.f, (float)width/height, 0.1f, 150.f));
+	m_Projection = glm::mat4(glm::perspective(45.f, (float)width/height, 0.1f, 1500.f));
 }
 
 Layer3D::~Layer3D()
@@ -87,6 +87,11 @@ void Layer3D::OnUpdate(float timestep)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	UpdatePositions(timestep);
+
+	m_MovSpeed = m_NormalMovSpeed;
+	if (m_KeyDown[GLFW_KEY_LEFT_CONTROL]) {
+		m_MovSpeed = m_SprintingMovSpeed;
+	}
 	
 	m_BlueTriangle->Use();
 	m_Vao->Bind();

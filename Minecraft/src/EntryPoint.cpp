@@ -17,7 +17,7 @@ int main()
 		app.Run();
 	}
 
-#ifndef DIST
+#if 0
 	spdlog::info("Press enter to continue: ");
 	std::cin.get();
 #endif

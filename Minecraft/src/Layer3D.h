@@ -56,6 +56,8 @@ private:
 		
 		{GLFW_KEY_LEFT_SHIFT, false},
 		{GLFW_KEY_SPACE, false},
+
+		{GLFW_KEY_LEFT_CONTROL, false}
 	};
 	
 	struct {
@@ -65,6 +67,10 @@ private:
 		int FB = 0;
 	} m_Mov;
 	
-	float m_MovSpeed = 5.f;
-	float m_AngleSpeed = 0.01f;
+	float m_AngleSpeed = 0.001f;
+
+	float m_NormalMovSpeed = 5.f;
+	float m_SprintingMovSpeed = 15.f;
+
+	float m_MovSpeed = m_NormalMovSpeed;
 };
