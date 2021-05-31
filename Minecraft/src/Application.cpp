@@ -5,6 +5,7 @@
 #include "Events/ApplicationEvent.h"
 
 #include "Layer3D.h"
+#include "Layer2D.h"
 
 Application* Application::s_Instance = nullptr;
 
@@ -34,7 +35,8 @@ Application::Application()
 	m_Window->SetVSync(false);
 	m_Window->EnableCursor(false);
 	
-	m_Layers.push_back(new Layer3D("Layer2d"));
+	m_Layers.push_back(new Layer3D("Layer 3d"));
+	m_Layers.push_back(new Layer2D("Layer 2d"));
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);

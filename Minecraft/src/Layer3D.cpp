@@ -8,7 +8,7 @@
 #include "Events/MouseEvent.h"
 
 Layer3D::Layer3D(const std::string& name)
-	:Layer(name)
+	: Layer(name)
 {
 	spdlog::trace("Layer {} was created", m_DebugName);
 	
@@ -53,7 +53,7 @@ Layer3D::Layer3D(const std::string& name)
 	m_BlueTriangle->Use();
 	
 	auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
-	m_Projection = glm::mat4(glm::perspective(45.f, (float)width/height, 0.1f, 1500.f));
+	m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
 }
 
 Layer3D::~Layer3D()
@@ -91,6 +91,17 @@ void Layer3D::OnUpdate(float timestep)
 	m_MovSpeed = m_NormalMovSpeed;
 	if (m_KeyDown[GLFW_KEY_LEFT_CONTROL]) {
 		m_MovSpeed = m_SprintingMovSpeed;
+	}
+	
+	if (m_KeyDown[GLFW_KEY_LEFT_BRACKET]) {
+		m_FOV -= 1.f * timestep;
+		auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
+		m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
+	}
+	if (m_KeyDown[GLFW_KEY_RIGHT_BRACKET]){
+		m_FOV += 1.f * timestep;
+		auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
+		m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
 	}
 	
 	m_BlueTriangle->Use();

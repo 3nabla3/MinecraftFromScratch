@@ -29,12 +29,6 @@ public:
 private:
 	void UpdatePositions(float timestep);
 	void UpdateDirection(int negative_dir_key, int positive_dir_key, int& axis);
-//	
-//	void UpdateLRdirection();
-//	void UpdateUDdirection();
-//	void UpdateFBdirection();
-	
-	std::string m_DebugName;
 
 	VertexArray* m_Vao = nullptr;
 	VertexBuffer* m_Buffer = nullptr;
@@ -47,6 +41,7 @@ private:
 	glm::vec2 m_Angle = glm::vec2(0.f, 0.f);
 	glm::vec2 m_PrevMousePos = glm::vec2(-1.f, -1.f);
 	
+	// stores whether a key is pressed down
 	std::unordered_map<int, bool> m_KeyDown = {
 		{GLFW_KEY_A, false},
 		{GLFW_KEY_D, false},
@@ -57,7 +52,10 @@ private:
 		{GLFW_KEY_LEFT_SHIFT, false},
 		{GLFW_KEY_SPACE, false},
 
-		{GLFW_KEY_LEFT_CONTROL, false}
+		{GLFW_KEY_LEFT_CONTROL, false},
+		
+		{GLFW_KEY_LEFT_BRACKET, false},
+		{GLFW_KEY_RIGHT_BRACKET, false}
 	};
 	
 	struct {
@@ -71,6 +69,7 @@ private:
 
 	float m_NormalMovSpeed = 5.f;
 	float m_SprintingMovSpeed = 15.f;
-
 	float m_MovSpeed = m_NormalMovSpeed;
+	
+	float m_FOV = 90.f;
 };
