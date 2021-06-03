@@ -13,7 +13,7 @@ Application::Application()
 	:m_LastFrameTime(0.0f)
 {	
 	spdlog::trace("Application was created");
-	
+
 	if (s_Instance)
 	{
 		spdlog::error("Application already exists!");

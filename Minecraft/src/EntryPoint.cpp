@@ -17,7 +17,7 @@ int main()
 		app.Run();
 	}
 
-#if 0
+#if 1
 	spdlog::info("Press enter to continue: ");
 	std::cin.get();
 #endif

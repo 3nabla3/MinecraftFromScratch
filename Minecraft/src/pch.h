@@ -19,3 +19,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+
+#ifdef __linux__
+	#include <signal.h>
+#endif
