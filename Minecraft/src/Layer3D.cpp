@@ -94,14 +94,16 @@ void Layer3D::OnUpdate(float timestep)
 	}
 	
 	if (m_KeyDown[GLFW_KEY_LEFT_BRACKET]) {
-		m_FOV -= 1.f * timestep;
+		m_FOV -= 10.f * timestep;
 		auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
-		m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
+		m_Projection = glm::mat4(glm::perspective(glm::radians(m_FOV), (float)width/height, 0.1f, 1500.f));
+		spdlog::info("FOV: {}", m_FOV);
 	}
 	if (m_KeyDown[GLFW_KEY_RIGHT_BRACKET]){
-		m_FOV += 1.f * timestep;
+		m_FOV += 10.f * timestep;
 		auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
-		m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
+		m_Projection = glm::mat4(glm::perspective(glm::radians(m_FOV), (float)width/height, 0.1f, 1500.f));
+		spdlog::info("FOV: {}", m_FOV);
 	}
 	
 	m_BlueTriangle->Use();

@@ -71,5 +71,5 @@ private:
 	float m_SprintingMovSpeed = 15.f;
 	float m_MovSpeed = m_NormalMovSpeed;
 	
-	float m_FOV = 90.f;
+	float m_FOV = 45.f;
 };
