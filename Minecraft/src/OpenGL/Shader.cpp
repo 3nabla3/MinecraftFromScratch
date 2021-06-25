@@ -32,7 +32,7 @@ Shader::ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 		else if (type != ShaderType::NONE)
 			ss[(int)type] << line << std::endl;
 	}
-
+	
 	return { ss[0].str() , ss[1].str() };
 }
 
@@ -76,6 +76,7 @@ Shader::Shader(const std::string& filepath)
 	:m_Filepath(filepath), m_Id(0)
 {
 	ShaderProgramSource source = ParseShader(filepath);
+	
 	m_Id = CreateProgram(source.VertexShader, source.FragmentShader);
 }
 

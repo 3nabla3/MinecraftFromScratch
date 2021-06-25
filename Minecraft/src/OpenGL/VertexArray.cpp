@@ -5,8 +5,7 @@
 VertexArray::VertexArray()
 	:m_Id(0)
 {
-	GLCall(glGenVertexArrays(1, &m_Id));
-	GLCall(glBindVertexArray(m_Id));
+	GLCall(glCreateVertexArrays(1, &m_Id));
 }
 
 VertexArray::~VertexArray()

@@ -4,8 +4,10 @@ workspace "Minecraft"
 	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
+IncludeDir["spdlog"] = "Minecraft/vendor/spdlog/include"
 IncludeDir["GLFW"] = "Minecraft/vendor/GLFW/include"
 IncludeDir["Glad"] = "Minecraft/vendor/Glad/include"
+IncludeDir["SOIL"] = "Minecraft/vendor/SOIL/include"
 IncludeDir["glm"] = "Minecraft/vendor/glm/include"
 
 include "Minecraft/vendor/GLFW"
@@ -28,10 +30,11 @@ project "Minecraft"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.SOIL}",
 		"Minecraft/src"
 	}
 
@@ -54,6 +57,7 @@ project "Minecraft"
 		{
 			"GLFW",
 			"Glad",
+			"SOIL",
 			"opengl32.lib"
 		}
 		
@@ -67,6 +71,7 @@ project "Minecraft"
 		{
 			"GLFW",
 			"Glad",
+			"SOIL",
 			"pthread",
 			"dl"
 		}

@@ -7,6 +7,8 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
+#include "SOIL/SOIL.h"
+
 Layer3D::Layer3D(const std::string& name)
 	: Layer(name)
 {
@@ -46,14 +48,13 @@ Layer3D::Layer3D(const std::string& name)
 	});
 
 	m_IndexBuffer = new IndexBuffer(indices, 6 * 6);
-
 	m_Vao->AddBuffer(*m_Buffer, *m_Layout);
 
 	m_BlueTriangle = new Shader("res/shaders/shader.glsl");
 	m_BlueTriangle->Use();
 	
 	auto [width, height] = Application::GetInstance()->GetWindow()->GetDimentions();
-	m_Projection = glm::mat4(glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f));
+	m_Projection = glm::perspective(m_FOV, (float)width/height, 0.1f, 1500.f);
 }
 
 Layer3D::~Layer3D()
@@ -84,7 +85,7 @@ static float delta = 0.001f;
 
 void Layer3D::OnUpdate(float timestep)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	UpdatePositions(timestep);
 

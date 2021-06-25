@@ -26,6 +26,7 @@ Minecraft/Minecraft.txt
 Minecraft/vendor/GLFW/GLFW.txt
 Minecraft/vendor/Glad/Glad.txt
 Minecraft/src/pch.h.gch
+Minecraft.batch_build
 
 
 ## Ignore Visual Studio temporary files, build results, and

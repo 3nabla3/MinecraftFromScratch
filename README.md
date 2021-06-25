@@ -13,7 +13,7 @@ __codelite__\
 `$ ./GenerateProject.sh`\
 Select `Minecraft` as startup project\
 In a terminal:\
-`sudo apt install libx11-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev`
+`sudo apt install libx11-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev mesa-common-dev libglu1-mesa-dev`
 
 # Status
-Displays a colored cube that can be rotated and moved
+Displays a cube of cubes that changes color

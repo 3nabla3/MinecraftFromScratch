@@ -32,11 +32,13 @@ Application::Application()
 	spdlog::info("Renderer:");
 	spdlog::info("\t {}", glGetString(GL_RENDERER));
 
-	m_Window->SetVSync(false);
-	m_Window->EnableCursor(false);
+	m_Window->SetVSync(true);
+	m_Window->EnableCursor(true);
 	
+	Layer2D* l2d = new Layer2D("Layer 2d");
+	l2d->OnAttach();
+	m_Layers.push_back(l2d);
 	m_Layers.push_back(new Layer3D("Layer 3d"));
-	m_Layers.push_back(new Layer2D("Layer 2d"));
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
