@@ -16,17 +16,17 @@ Layer2D::Layer2D(const std::string& name)
 	//  Position  Color             Texcoords
     -0.5f,  0.5f,// 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
      0.5f,  0.5f,// 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
-     0.5f, -0.5f,// 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
-//    -0.5f, -0.5f,// 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+    -0.5f, -0.5f,// 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+	 0.5f, -0.5f,// 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
 	};
 	
-//	unsigned int indices[] = {
-//		0, 1, 3, 1, 3, 2
-//	};
+	unsigned int indices[] = {
+		0, 1, 2, 1, 2, 3
+	};
 	
 	m_VertexArray = new VertexArray();
 	
-	m_VertexBuffer = new VertexBuffer(vertices, 2 * 3 * sizeof(float));
+	m_VertexBuffer = new VertexBuffer(vertices, 2 * 6 * sizeof(float));
 	m_VertexBuffer->Bind();
 	
 	m_Layout = new VertexBufferLayout({
@@ -35,7 +35,7 @@ Layer2D::Layer2D(const std::string& name)
 //		{GL_FLOAT, 2, GL_FALSE}  // tex coords
 	});
 	
-//	m_IndexBuffer = new IndexBuffer(indices, 6);
+	m_IndexBuffer = new IndexBuffer(indices, 6);
 	m_VertexArray->AddBuffer(*m_VertexBuffer, *m_Layout);
 	
 	m_Shader = new Shader("res/shaders/simpleShader.glsl");
@@ -79,10 +79,10 @@ void Layer2D::OnUpdate(float timestep)
 	
 	m_Shader->Use();
 	m_VertexArray->Bind();
-//	m_IndexBuffer->Bind();
+	m_IndexBuffer->Bind();
 //	glm::mat4 proj = glm::ortho(-10.f, 10.f, -10.f, 10.f, 1.f, 150.f);
 //	m_Shader->UploadUniformMat4("u_Projection", proj);
 //	m_Shader->UploadUniformMat4("u_Translation", glm::mat4(1.0f));
-//	
-	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

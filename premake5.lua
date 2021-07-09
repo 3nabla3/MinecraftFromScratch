@@ -57,7 +57,7 @@ project "Minecraft"
 		{
 			"GLFW",
 			"Glad",
-			"SOIL",
+			 -- "SOIL",
 			"opengl32.lib"
 		}
 		
