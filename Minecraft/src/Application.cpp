@@ -35,10 +35,9 @@ Application::Application()
 	m_Window->SetVSync(true);
 	m_Window->EnableCursor(true);
 	
-	Layer2D* l2d = new Layer2D("Layer 2d");
-	l2d->OnAttach();
-	m_Layers.push_back(l2d);
-	m_Layers.push_back(new Layer3D("Layer 3d"));
+	// draw the 2D layer second to make sure it is always on top
+	AddLayer(new Layer3D("Layer 3d"));
+	AddLayer(new Layer2D("Layer 2d"));
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -106,4 +105,10 @@ bool Application::OnWindowClose(WindowCloseEvent& event)
 	spdlog::trace("Close button was pressed");
 	m_Running = false;
 	return true;
+}
+
+void Application::AddLayer(Layer* layer)
+{
+	layer->OnAttach();
+	m_Layers.push_back(layer);
 }

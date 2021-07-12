@@ -85,7 +85,7 @@ static float delta = 0.001f;
 
 void Layer3D::OnUpdate(float timestep)
 {
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	
 	UpdatePositions(timestep);
 

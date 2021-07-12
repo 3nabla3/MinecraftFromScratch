@@ -75,7 +75,8 @@ void Layer2D::OnEvent(Event& e)
 
 void Layer2D::OnUpdate(float timestep)
 {
-	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	// Only clear the depth buffer to make sure the 2D layer is always on top
+	GLCall(glClear(GL_DEPTH_BUFFER_BIT));
 	
 	m_Shader->Use();
 	m_VertexArray->Bind();

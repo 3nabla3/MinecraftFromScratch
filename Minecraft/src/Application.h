@@ -16,7 +16,9 @@ public:
 	~Application();
 
 	bool OnWindowClose(WindowCloseEvent& event);
-	bool OnWindowResize(WindowResizeEvent& event);
+	// bool OnWindowResize(WindowResizeEvent& event); // Add this method later
+	void AddLayer(Layer* layer);
+	// void RemoveLayer(Layer* layer);
 	void OnUpdate(float timestep);
 	void OnEvent(Event& e);
 	void Run();
