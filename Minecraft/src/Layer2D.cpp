@@ -14,10 +14,10 @@ Layer2D::Layer2D(const std::string& name)
 	
 	float vertices[] = {
 	//  Position  Color             Texcoords
-    -0.5f,  0.5f,// 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
-     0.5f,  0.5f,// 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
-    -0.5f, -0.5f,// 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
-	 0.5f, -0.5f,// 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+    -0.5f,  0.5f, 1.0f, 0.0f, 1.0f, //0.0f, 0.0f, // Top-left
+     0.5f,  0.5f, 1.0f, 1.0f, 0.0f, //1.0f, 0.0f, // Top-right
+    -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, //0.0f, 1.0f  // Bottom-left
+	 0.5f, -0.5f, 0.0f, 1.0f, 1.0f, //1.0f, 1.0f, // Bottom-right
 	};
 	
 	unsigned int indices[] = {
@@ -26,13 +26,13 @@ Layer2D::Layer2D(const std::string& name)
 	
 	m_VertexArray = new VertexArray();
 	
-	m_VertexBuffer = new VertexBuffer(vertices, 2 * 6 * sizeof(float));
+	m_VertexBuffer = new VertexBuffer(vertices, 4*5 * sizeof(float));
 	m_VertexBuffer->Bind();
 	
 	m_Layout = new VertexBufferLayout({
 		{GL_FLOAT, 2, GL_FALSE}, // position
-//		{GL_FLOAT, 3, GL_FALSE}, // color
-//		{GL_FLOAT, 2, GL_FALSE}  // tex coords
+		{GL_FLOAT, 3, GL_FALSE}, // color
+		//{GL_FLOAT, 2, GL_FALSE}  // tex coords
 	});
 	
 	m_IndexBuffer = new IndexBuffer(indices, 6);
@@ -41,21 +41,21 @@ Layer2D::Layer2D(const std::string& name)
 	m_Shader = new Shader("res/shaders/simpleShader.glsl");
 	m_Shader->Use();
 
-//	int x, y, c;
-//	unsigned char* data = SOIL_load_image("res/textures/wood.jpeg", &x, &y, &c, SOIL_LOAD_RGB);
-//	spdlog::info("Loaded image of size {} by {}", x, y);
-//
-//	
-//	glCreateTextures(GL_TEXTURE_2D, 1, &textureID);
-//	glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, x, y);
-//	
-//	glTextureParameteri(textureID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//	glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//	glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//	glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//	
-//	glTextureSubImage2D(textureID, 0, 0, 0, x, y, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//	SOIL_free_image_data(data);
+	int x, y, c;
+	unsigned char* data = SOIL_load_image("res/textures/wood.jpeg", &x, &y, &c, SOIL_LOAD_RGB);
+	spdlog::info("Loaded image of size {} by {}", x, y);
+
+	
+	glCreateTextures(GL_TEXTURE_2D, 1, &textureID);
+	glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, x, y);
+	
+	glTextureParameteri(textureID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+	glTextureSubImage2D(textureID, 0, 0, 0, x, y, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	SOIL_free_image_data(data);
 }
 
 void Layer2D::OnAttach()

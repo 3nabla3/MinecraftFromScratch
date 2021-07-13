@@ -13,6 +13,7 @@ IncludeDir["glm"] = "Minecraft/vendor/glm/include"
 include "Minecraft/vendor/GLFW"
 include "Minecraft/vendor/Glad"
 include "Minecraft/vendor/glm"
+include "Minecraft/vendor/SOIL"
 
 project "Minecraft"
 	kind "ConsoleApp"
@@ -57,7 +58,7 @@ project "Minecraft"
 		{
 			"GLFW",
 			"Glad",
-			 -- "SOIL",
+			"SOIL",
 			"opengl32.lib"
 		}
 		
