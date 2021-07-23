@@ -1,6 +1,6 @@
 
 project "SOIL"
-	kind "StaticLib"
+	kind "SharedLib"
 	language "C"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -8,7 +8,7 @@ project "SOIL"
 
 	files
 	{
-		"src/**.c",
+		"src/*.c",
 		"include/SOIL/**.h"
 	}
 
@@ -19,6 +19,7 @@ project "SOIL"
 		
 
 	filter "system:linux"
+		links { "GL" }
 		pic "On"
 	        toolset "gcc"
 		systemversion "latest"
