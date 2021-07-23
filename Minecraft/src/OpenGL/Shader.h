@@ -12,6 +12,7 @@ public:
 
 	void UploadUniformMat4(const std::string& uniformName, const glm::mat4& matrix) const;
 	void UploadUniformf(const std::string& uniformName, float value) const;
+	void UploadUniformi(const std::string& uniformName, int value) const;
 
 private:
 	unsigned int m_Id;

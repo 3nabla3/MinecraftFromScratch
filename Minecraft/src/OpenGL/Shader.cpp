@@ -108,6 +108,13 @@ void Shader::UploadUniformf(const std::string& uniformName, float value) const
 	GLCall(glUniform1f(location, value));
 }
 
+void Shader::UploadUniformi(const std::string& uniformName, int value) const
+{
+	int location = GetUniformLocation(uniformName);
+
+	GLCall(glUniform1i(location, value));
+}
+
 unsigned int Shader::GetUniformLocation(const std::string& uniformName) const
 {
 	GLCall(int location = glGetUniformLocation(m_Id, uniformName.c_str()));

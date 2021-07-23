@@ -14,10 +14,10 @@ Layer2D::Layer2D(const std::string& name)
 	
 	float vertices[] = {
 	//  Position  Color             Texcoords
-    -0.5f,  0.5f, 1.0f, 0.0f, 1.0f, //0.0f, 0.0f, // Top-left
-     0.5f,  0.5f, 1.0f, 1.0f, 0.0f, //1.0f, 0.0f, // Top-right
-    -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, //0.0f, 1.0f  // Bottom-left
-	 0.5f, -0.5f, 0.0f, 1.0f, 1.0f, //1.0f, 1.0f, // Bottom-right
+    -0.5f,  0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+     0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
+    -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // Bottom-left
+	 0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
 	};
 	
 	unsigned int indices[] = {
@@ -26,13 +26,13 @@ Layer2D::Layer2D(const std::string& name)
 	
 	m_VertexArray = new VertexArray();
 	
-	m_VertexBuffer = new VertexBuffer(vertices, 4*5 * sizeof(float));
+	m_VertexBuffer = new VertexBuffer(vertices, 4*7 * sizeof(float));
 	m_VertexBuffer->Bind();
 	
 	m_Layout = new VertexBufferLayout({
 		{GL_FLOAT, 2, GL_FALSE}, // position
 		{GL_FLOAT, 3, GL_FALSE}, // color
-		//{GL_FLOAT, 2, GL_FALSE}  // tex coords
+		{GL_FLOAT, 2, GL_FALSE}  // tex coords
 	});
 	
 	m_IndexBuffer = new IndexBuffer(indices, 6);
@@ -46,15 +46,18 @@ Layer2D::Layer2D(const std::string& name)
 	spdlog::info("Loaded image of size {} by {}", x, y);
 
 	
-	glCreateTextures(GL_TEXTURE_2D, 1, &textureID);
-	glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, x, y);
+	GLCall(glGenTextures(1, &textureID));
+	GLCall(glBindTexture(GL_TEXTURE_2D, textureID));
+	//glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, x, y);
 	
-	glTextureParameteri(textureID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	GLCall(glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	GLCall(glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	GLCall(glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCall(glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	
-	glTextureSubImage2D(textureID, 0, 0, 0, x, y, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
+	//glTextureSubImage2D(GL_TEXTURE_2D, 0, 0, 0, x, y, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 	SOIL_free_image_data(data);
 }
 
@@ -76,7 +79,8 @@ void Layer2D::OnEvent(Event& e)
 void Layer2D::OnUpdate(float timestep)
 {
 	// Only clear the depth buffer to make sure the 2D layer is always on top
-	GLCall(glClear(GL_DEPTH_BUFFER_BIT));
+	GLCall(glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT));
+	//GLCall(glClear(GL_DEPTH_BUFFER_BIT));
 	
 	m_Shader->Use();
 	m_VertexArray->Bind();
@@ -84,6 +88,10 @@ void Layer2D::OnUpdate(float timestep)
 //	glm::mat4 proj = glm::ortho(-10.f, 10.f, -10.f, 10.f, 1.f, 150.f);
 //	m_Shader->UploadUniformMat4("u_Projection", proj);
 //	m_Shader->UploadUniformMat4("u_Translation", glm::mat4(1.0f));
+	//m_Shader->UploadUniformf("u_rChannel", 1.0);
+	glActiveTexture(GL_TEXTURE0);
+	GLCall(glBindTexture(GL_TEXTURE_2D, textureID));
+	m_Shader->UploadUniformi("image", 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

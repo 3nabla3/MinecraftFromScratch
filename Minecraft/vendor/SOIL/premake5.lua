@@ -1,6 +1,11 @@
 
 project "SOIL"
-	kind "SharedLib"
+	-- for some reason the SOIL library does not work the same on each platform
+	filter "system:linux"
+		kind "SharedLib"
+	filter "system:windows"
+		kind "StaticLib"
+
 	language "C"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")

@@ -36,7 +36,7 @@ Application::Application()
 	m_Window->EnableCursor(true);
 	
 	// draw the 2D layer second to make sure it is always on top
-	AddLayer(new Layer3D("Layer 3d"));
+	//AddLayer(new Layer3D("Layer 3d"));
 	AddLayer(new Layer2D("Layer 2d"));
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
